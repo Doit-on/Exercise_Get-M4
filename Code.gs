@@ -227,6 +227,15 @@ function handleRequest(e) {
         result = handleImportRoster(params);
         break;
 
+      case "submit_inquiry":
+      case "submit_question":
+        result = handleStudentInquiry(params);
+        break;
+
+      case "get_inquiries":
+        result = handleGetInquiries(params);
+        break;
+
       default:
         result = { status: "error", message: `Unknown action: '${action}'` };
     }
@@ -523,4 +532,63 @@ function handleImportRoster(params) {
  */
 function refreshSummaryStats() {
   SpreadsheetApp.getActiveSpreadsheet().toast("อัปเดตสถิติคะแนนและข้อมูลเรียบร้อยแล้ว", "ระบบ TWP ม.4", 3);
+}
+
+/**
+ * 8. บันทึกข้อสงสัยหรือคำถามจากนักเรียน (Student Inquiry)
+ */
+function handleStudentInquiry(params) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(15000);
+    let sheet = ss.getSheetByName("Inquiries");
+    if (!sheet) {
+      sheet = ss.insertSheet("Inquiries");
+      sheet.appendRow(["Timestamp", "Email", "Name", "School", "UnitId", "SectionTitle", "QuestionRef", "Message", "Status"]);
+      sheet.getRange(1, 1, 1, 9).setFontWeight("bold").setBackground("#F5F5F7");
+      sheet.setFrozenRows(1);
+    }
+    const timestamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "dd/MM/yyyy HH:mm:ss");
+    const email = (params.email || "").trim().toLowerCase();
+    const name = (params.name || "").trim();
+    const school = (params.school || "").trim();
+    const unitId = (params.unitId || "").trim();
+    const sectionTitle = (params.sectionTitle || "").trim();
+    const questionRef = (params.questionRef || "").trim();
+    const message = (params.message || "").trim();
+
+    sheet.getRange(sheet.getLastRow() + 1, 1, 1, 9).setNumberFormat("@");
+    sheet.appendRow([timestamp, email, name, school, unitId, sectionTitle, questionRef, message, "Pending"]);
+
+    return { status: "success", message: "Inquiry recorded successfully.", timestamp: timestamp };
+  } catch (err) {
+    return { status: "error", message: "Failed to record inquiry: " + err.toString() };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/**
+ * 9. ดึงรายการข้อสงสัยสำหรับคุณครู
+ */
+function handleGetInquiries(params) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName("Inquiries");
+  if (!sheet || sheet.getLastRow() <= 1) {
+    return { status: "success", inquiries: [] };
+  }
+  const data = sheet.getRange(2, 1, sheet.getLastRow() - 1, 9).getValues();
+  const list = data.map(r => ({
+    timestamp: r[0],
+    email: r[1],
+    name: r[2],
+    school: r[3],
+    unitId: r[4],
+    sectionTitle: r[5],
+    questionRef: r[6],
+    message: r[7],
+    status: r[8]
+  }));
+  return { status: "success", inquiries: list.reverse() };
 }
