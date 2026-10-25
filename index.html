@@ -138,36 +138,46 @@
       background-color: #F0F6FF;
       box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.15);
     }
+    .safe-bottom {
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans">
 
   <!-- Apple Navigation Bar -->
   <header class="sticky top-0 z-40 apple-glass hairline-border border-b shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-3">
       
-      <!-- Left: Logo ทวพ. + Full Sentence Header -->
-      <div class="flex items-center space-x-3.5 cursor-pointer" onclick="showView('curriculum')">
-        <img src="assets/twp-logo.png" alt="โลโก้ ทวพ." class="w-11 h-11 object-contain rounded-2xl shadow-apple-sm bg-white p-1 border border-black/5 flex-shrink-0" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'44\' height=\'44\' viewBox=\'0 0 44 44\'><rect width=\'44\' height=\'44\' rx=\'12\' fill=\'%231d1d1f\'/><text x=\'50%25\' y=\'55%25\' fill=\'%23ffffff\' font-weight=\'bold\' font-size=\'14\' text-anchor=\'middle\' dominant-baseline=\'middle\'>ทวพ</text></svg>'">
+      <!-- Left: Logo ทวพ. + Full Sentence Header (Mobile Responsive) -->
+      <div class="flex items-center space-x-2.5 sm:space-x-3.5 cursor-pointer min-w-0" onclick="showView('curriculum')">
+        <img src="assets/twp-logo.png" alt="โลโก้ ทวพ." class="w-9 h-9 sm:w-11 sm:h-11 object-contain rounded-2xl shadow-apple-sm bg-white p-1 border border-black/5 flex-shrink-0" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'44\' height=\'44\' viewBox=\'0 0 44 44\'><rect width=\'44\' height=\'44\' rx=\'12\' fill=\'%231d1d1f\'/><text x=\'50%25\' y=\'55%25\' fill=\'%23ffffff\' font-weight=\'bold\' font-size=\'14\' text-anchor=\'middle\' dominant-baseline=\'middle\'>ทวพ</text></svg>'">
         
-        <div class="flex flex-col">
-          <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <span class="font-display font-extrabold text-base sm:text-lg tracking-tight text-apple-textPrimary">
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <span class="font-display font-extrabold text-sm sm:text-lg tracking-tight text-apple-textPrimary truncate">
               Get INVOLVED! ม.4
             </span>
-            <span class="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-gray-100 text-gray-800 hairline-border">
+            <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded-full font-semibold bg-gray-100 text-gray-800 hairline-border truncate max-w-[175px] sm:max-w-none">
               ระดับชั้นมัธยมศึกษาปีที่ 4 เตรียมขึ้นระดับอุดมศึกษา
             </span>
           </div>
-          <p class="text-[11px] text-apple-textSecondary leading-none mt-1">
+          <p class="text-[10px] sm:text-[11px] text-apple-textSecondary leading-none mt-1 hidden sm:block truncate">
             บริษัท สำนักพิมพ์ ไทยวัฒนาพานิช จำกัด (TWP) • Digital Learning System
           </p>
         </div>
       </div>
 
       <!-- Center & Right Actions -->
-      <div class="flex items-center space-x-2 sm:space-x-3">
-        <!-- Navigation Tabs -->
+      <div class="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+        <!-- Navigation Tabs (Desktop & Laptop screens >= lg) -->
         <nav class="hidden lg:flex items-center bg-gray-100/90 p-1 rounded-full hairline-border">
           <button onclick="showView('curriculum')" id="nav-btn-curriculum" class="px-3.5 py-1.5 text-xs font-semibold rounded-full bg-white text-apple-textPrimary shadow-apple-sm transition">
             แผนผังบทเรียน
@@ -184,25 +194,25 @@
           </button>
         </nav>
 
-        <!-- Cloud Sync Indicator -->
-        <div id="sync-status-indicator" class="hidden sm:flex items-center space-x-1.5 text-[11px] text-apple-textSecondary bg-white px-3 py-1.5 rounded-full hairline-border shadow-apple-sm">
+        <!-- Cloud Sync Indicator (Tablet & Desktop) -->
+        <div id="sync-status-indicator" class="hidden md:flex items-center space-x-1.5 text-[11px] text-apple-textSecondary bg-white px-3 py-1.5 rounded-full hairline-border shadow-apple-sm">
           <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
           <span id="sync-status-text">Cloud Sync</span>
         </div>
 
-        <!-- Student Dropdown Container with Logout -->
+        <!-- Student Profile & Account Menu (Strictly Student actions - NO teacher passwords) -->
         <div class="relative" id="student-menu-container">
-          <button onclick="toggleStudentDropdown(event)" class="tactile-btn flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-apple-textPrimary text-white shadow-apple-btn-dark">
+          <button onclick="toggleStudentDropdown(event)" class="tactile-btn flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold bg-apple-textPrimary text-white shadow-apple-btn-dark">
             <i class="ph-bold ph-user-circle text-base"></i>
-            <span id="user-display-name">เข้าสู่ระบบ</span>
+            <span id="user-display-name" class="max-w-[75px] sm:max-w-none truncate">เข้าสู่ระบบ</span>
             <i class="ph-bold ph-caret-down text-xs opacity-70"></i>
           </button>
 
           <!-- Dropdown Menu Box -->
-          <div id="student-dropdown-menu" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-apple-depth hairline-border p-2 z-50 transition-all duration-200">
+          <div id="student-dropdown-menu" class="hidden absolute right-0 mt-2 w-64 max-w-[calc(100vw-24px)] bg-white rounded-2xl shadow-apple-depth hairline-border p-2 z-50 transition-all duration-200">
             <div class="p-3 bg-gray-50 rounded-xl mb-1.5">
               <div class="text-xs font-bold text-apple-textPrimary" id="dropdown-student-name">ยังไม่ได้เข้าสู่ระบบ</div>
-              <div class="text-[11px] text-apple-textSecondary" id="dropdown-student-school">กรุณาเข้าสู่ระบบเพื่อบันทึกผลการทำแบบฝึกหัด</div>
+              <div class="text-[11px] text-apple-textSecondary leading-snug mt-0.5" id="dropdown-student-school">กรุณาเข้าสู่ระบบเพื่อบันทึกผลการทำแบบฝึกหัด</div>
               <div class="text-[10px] text-gray-400 font-mono mt-0.5 truncate" id="dropdown-student-email">-</div>
             </div>
 
@@ -214,10 +224,6 @@
               <button onclick="toggleAuthModal(); closeStudentDropdown();" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 flex items-center space-x-2 text-apple-textPrimary font-medium">
                 <i class="ph-bold ph-sign-in text-blue-600 text-sm" id="auth-menu-icon"></i>
                 <span id="auth-menu-text">เข้าสู่ระบบ / สลับบัญชี</span>
-              </button>
-              <button onclick="requestTeacherAccess(); closeStudentDropdown();" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 flex items-center space-x-2 text-apple-textPrimary font-medium lg:hidden">
-                <i class="ph-bold ph-chalkboard-teacher text-indigo-600 text-sm"></i>
-                <span>ระบบคุณครู (รหัสผ่าน 1234)</span>
               </button>
 
               <div id="logout-divider" class="hidden border-t border-gray-100 my-1"></div>
@@ -234,8 +240,29 @@
     </div>
   </header>
 
-  <!-- Main Workspace -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8">
+  <!-- Apple Mobile Bottom Navigation Bar (Consistent with Desktop Nav) -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-gray-200/80 px-2 py-1.5 flex items-center justify-around shadow-apple-depth safe-bottom" id="mobile-nav-bar">
+    <button onclick="showView('curriculum')" id="mobile-nav-curriculum" class="flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-apple-accent font-bold transition">
+      <i class="ph-bold ph-books text-lg"></i>
+      <span class="text-[10px] mt-0.5">แผนผัง</span>
+    </button>
+    <button onclick="showView('exercise')" id="mobile-nav-exercise" class="flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-apple-textSecondary font-medium transition">
+      <i class="ph-bold ph-pencil-simple text-lg"></i>
+      <span class="text-[10px] mt-0.5">แบบฝึกหัด</span>
+    </button>
+    <button onclick="showView('certificate')" id="mobile-nav-certificate" class="flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-apple-textSecondary font-medium transition relative">
+      <i class="ph-bold ph-certificate text-lg"></i>
+      <span class="text-[10px] mt-0.5">เกียรติบัตร</span>
+      <span id="mobile-nav-cert-pct" class="absolute top-0 right-1/4 px-1.5 py-0.2 rounded-full bg-blue-100 text-blue-700 text-[9px] font-bold">0%</span>
+    </button>
+    <button onclick="requestTeacherAccess()" id="mobile-nav-teacher" class="flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-apple-textSecondary font-medium transition">
+      <i class="ph-bold ph-lock-key text-lg"></i>
+      <span class="text-[10px] mt-0.5">ระบบคุณครู</span>
+    </button>
+  </nav>
+
+  <!-- Main Workspace (Padding adjusted for mobile bottom navigation bar) -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-5 sm:py-8 pb-24 lg:pb-8">
 
     <!-- VIEW 1: CURRICULUM OVERVIEW -->
     <div id="view-curriculum" class="space-y-8">
@@ -277,22 +304,22 @@
     <div id="view-exercise" class="hidden space-y-6">
       
       <!-- Exercise Header & Section Bar -->
-      <div class="bg-white p-5 rounded-3xl hairline-border shadow-apple-card flex flex-wrap items-center justify-between gap-4">
+      <div class="bg-white p-4 sm:p-5 rounded-3xl hairline-border shadow-apple-card flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <span id="active-unit-badge" class="text-xs font-bold px-3 py-1 rounded-full bg-blue-50 text-apple-accent hairline-border">Unit 5</span>
-          <h2 id="active-unit-title" class="text-xl font-display font-bold text-apple-textPrimary mt-1">Art, Photography & Passive Voice</h2>
+          <h2 id="active-unit-title" class="text-lg sm:text-xl font-display font-bold text-apple-textPrimary mt-1">Art, Photography & Passive Voice</h2>
           <p id="active-unit-desc" class="text-xs text-apple-textSecondary mt-0.5">คำอธิบายหน่วยการเรียนรู้</p>
         </div>
 
-        <!-- Section Navigation Pills -->
-        <div class="inline-flex bg-gray-100 p-1 rounded-2xl hairline-border text-xs">
-          <button onclick="switchSection(0)" id="sec-btn-0" class="px-4 py-2 font-semibold rounded-xl bg-white text-apple-textPrimary shadow-apple-sm transition">
+        <!-- Section Navigation Pills (Smooth Horizontal Scroll on Mobile) -->
+        <div class="flex items-center overflow-x-auto no-scrollbar bg-gray-100 p-1 rounded-2xl hairline-border text-xs w-full md:w-auto">
+          <button onclick="switchSection(0)" id="sec-btn-0" class="flex-1 md:flex-none whitespace-nowrap px-3 sm:px-4 py-2 font-semibold rounded-xl bg-white text-apple-textPrimary shadow-apple-sm transition">
             Part 1: Video
           </button>
-          <button onclick="switchSection(1)" id="sec-btn-1" class="px-4 py-2 font-medium rounded-xl text-apple-textSecondary hover:text-apple-textPrimary transition">
+          <button onclick="switchSection(1)" id="sec-btn-1" class="flex-1 md:flex-none whitespace-nowrap px-3 sm:px-4 py-2 font-medium rounded-xl text-apple-textSecondary hover:text-apple-textPrimary transition">
             Part 2: Vocabulary
           </button>
-          <button onclick="switchSection(2)" id="sec-btn-2" class="px-4 py-2 font-medium rounded-xl text-apple-textSecondary hover:text-apple-textPrimary transition">
+          <button onclick="switchSection(2)" id="sec-btn-2" class="flex-1 md:flex-none whitespace-nowrap px-3 sm:px-4 py-2 font-medium rounded-xl text-apple-textSecondary hover:text-apple-textPrimary transition">
             Part 3: Grammar
           </button>
         </div>
@@ -303,21 +330,19 @@
         <!-- Injected dynamically -->
       </div>
 
-      <!-- Part Action Bar -->
-      <div class="bg-white p-5 rounded-3xl hairline-border shadow-apple-card flex flex-wrap items-center justify-between gap-3">
-        <button onclick="navigateSection(-1)" id="btn-prev-section" class="tactile-btn px-4 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-apple-textPrimary text-xs font-semibold shadow-apple-sm flex items-center space-x-1.5">
+      <!-- Part Action Bar (Mobile Responsive Layout) -->
+      <div class="bg-white p-4 sm:p-5 rounded-3xl hairline-border shadow-apple-card flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <button onclick="navigateSection(-1)" id="btn-prev-section" class="tactile-btn px-4 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-apple-textPrimary text-xs font-semibold shadow-apple-sm flex items-center justify-center space-x-1.5">
           <i class="ph-bold ph-arrow-left"></i>
           <span>ส่วนก่อนหน้า</span>
         </button>
 
-        <div class="flex items-center space-x-3">
-          <button onclick="submitCurrentPart()" id="btn-check-part" class="tactile-btn px-6 py-2.5 rounded-xl bg-apple-accent text-white text-xs font-semibold shadow-apple-btn-primary flex items-center space-x-2">
-            <i class="ph-bold ph-check-circle text-base"></i>
-            <span>ตรวจคำตอบ & ดูเฉลยละเอียดของส่วนนี้</span>
-          </button>
-        </div>
+        <button onclick="submitCurrentPart()" id="btn-check-part" class="tactile-btn flex-1 sm:flex-initial px-5 sm:px-6 py-2.5 rounded-xl bg-apple-accent text-white text-xs font-semibold shadow-apple-btn-primary flex items-center justify-center space-x-2">
+          <i class="ph-bold ph-check-circle text-base"></i>
+          <span>ตรวจคำตอบ & ดูเฉลยละเอียดของส่วนนี้</span>
+        </button>
 
-        <button onclick="navigateSection(1)" id="btn-next-section" class="tactile-btn px-4 py-2.5 rounded-xl bg-apple-textPrimary text-white text-xs font-semibold shadow-apple-btn-dark flex items-center space-x-1.5">
+        <button onclick="navigateSection(1)" id="btn-next-section" class="tactile-btn px-4 py-2.5 rounded-xl bg-apple-textPrimary text-white text-xs font-semibold shadow-apple-btn-dark flex items-center justify-center space-x-1.5">
           <span>ส่วนถัดไป</span>
           <i class="ph-bold ph-arrow-right"></i>
         </button>
@@ -449,7 +474,7 @@
 
   <!-- MODAL: Teacher PIN/Password Authentication -->
   <div id="teacherAuthModal" class="hidden fixed inset-0 z-50 bg-black/45 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-apple-depth hairline-border space-y-5 text-center relative">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-apple-depth hairline-border space-y-5 text-center relative max-h-[90vh] overflow-y-auto">
       <button onclick="closeTeacherAuthModal()" class="absolute top-5 right-5 text-gray-400 hover:text-black text-lg">✕</button>
       
       <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center mx-auto shadow-apple-sm">
@@ -482,7 +507,7 @@
 
   <!-- MODAL: Student Authentication / Registration -->
   <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-apple-depth hairline-border space-y-5">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-apple-depth hairline-border space-y-5 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between">
         <h3 class="text-lg font-display font-bold text-apple-textPrimary">บัญชีนักเรียน ม.4 (Student Account)</h3>
         <button onclick="toggleAuthModal()" class="text-gray-400 hover:text-black text-lg">✕</button>
@@ -519,7 +544,7 @@
 
   <!-- MODAL: Google Apps Script Backend URL Settings -->
   <div id="config-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-apple-depth hairline-border space-y-5">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-apple-depth hairline-border space-y-5 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between">
         <h3 class="text-lg font-display font-bold text-apple-textPrimary">ตั้งค่าการเชื่อมโยง Google Apps Script</h3>
         <button onclick="toggleConfigModal()" class="text-gray-400 hover:text-black text-lg">✕</button>
@@ -636,7 +661,11 @@
       ['curriculum', 'exercise', 'certificate', 'teacher'].forEach(v => {
         const el = document.getElementById('view-' + v);
         const navBtn = document.getElementById('nav-btn-' + v);
+        const mobileBtn = document.getElementById('mobile-nav-' + v);
+
         if (el) el.classList.toggle('hidden', v !== viewName);
+
+        // Update Desktop Navigation Tabs
         if (navBtn) {
           if (v === viewName) {
             navBtn.className = 'px-3.5 py-1.5 text-xs font-semibold rounded-full bg-white text-apple-textPrimary shadow-apple-sm transition';
@@ -644,7 +673,17 @@
             navBtn.className = 'px-3.5 py-1.5 text-xs font-medium rounded-full text-apple-textSecondary hover:text-apple-textPrimary transition';
           }
         }
+
+        // Update Mobile Bottom Tab Bar
+        if (mobileBtn) {
+          if (v === viewName) {
+            mobileBtn.className = 'flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-apple-accent font-bold transition';
+          } else {
+            mobileBtn.className = 'flex-1 flex flex-col items-center justify-center py-1 rounded-xl text-apple-textSecondary font-medium transition';
+          }
+        }
       });
+
       if (viewName === 'certificate') {
         updateCertificateStatus();
         drawCertificateCanvas();
@@ -1202,6 +1241,8 @@
       // Update Nav percentage: strictly 0% when logged out
       const navPct = document.getElementById('nav-cert-pct');
       if (navPct) navPct.textContent = `${revealInfo.pct}%`;
+      const mobileNavPct = document.getElementById('mobile-nav-cert-pct');
+      if (mobileNavPct) mobileNavPct.textContent = `${revealInfo.pct}%`;
 
       // 1. Background: Clean Apple White-Gray Gradient
       const bgGrad = ctx.createLinearGradient(0, 0, w, h);
