@@ -142,7 +142,7 @@
 </head>
 <body class="min-h-screen flex flex-col font-sans">
 
-  <!-- Apple Navigation Bar (ปรับ Header เต็มประโยค และระยะสวยงาม) -->
+  <!-- Apple Navigation Bar -->
   <header class="sticky top-0 z-40 apple-glass hairline-border border-b shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
       
@@ -151,7 +151,6 @@
         <img src="assets/twp-logo.png" alt="โลโก้ ทวพ." class="w-11 h-11 object-contain rounded-2xl shadow-apple-sm bg-white p-1 border border-black/5 flex-shrink-0" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'44\' height=\'44\' viewBox=\'0 0 44 44\'><rect width=\'44\' height=\'44\' rx=\'12\' fill=\'%231d1d1f\'/><text x=\'50%25\' y=\'55%25\' fill=\'%23ffffff\' font-weight=\'bold\' font-size=\'14\' text-anchor=\'middle\' dominant-baseline=\'middle\'>ทวพ</text></svg>'">
         
         <div class="flex flex-col">
-          <!-- แสดงข้อความเต็มประโยคชัดเจนตามคำสั่ง -->
           <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <span class="font-display font-extrabold text-base sm:text-lg tracking-tight text-apple-textPrimary">
               Get INVOLVED! ม.4
@@ -179,7 +178,6 @@
           <button onclick="showView('certificate')" id="nav-btn-certificate" class="px-3.5 py-1.5 text-xs font-medium rounded-full text-apple-textSecondary hover:text-apple-textPrimary transition">
             เกียรติบัตรออนไลน์ (<span id="nav-cert-pct" class="font-bold text-blue-600">0%</span>)
           </button>
-          <!-- ปุ่มระบบคุณครู: ต้องใส่รหัสผ่าน 1234 -->
           <button onclick="requestTeacherAccess()" id="nav-btn-teacher" class="px-3.5 py-1.5 text-xs font-medium rounded-full text-apple-textSecondary hover:text-apple-textPrimary transition flex items-center space-x-1">
             <i class="ph-bold ph-lock-key text-xs"></i>
             <span>ระบบคุณครู</span>
@@ -192,42 +190,39 @@
           <span id="sync-status-text">Cloud Sync</span>
         </div>
 
-        <!-- Student Dropdown Container (มีปุ่ม Logout ชัดเจน) -->
+        <!-- Student Dropdown Container with Logout -->
         <div class="relative" id="student-menu-container">
           <button onclick="toggleStudentDropdown(event)" class="tactile-btn flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-apple-textPrimary text-white shadow-apple-btn-dark">
             <i class="ph-bold ph-user-circle text-base"></i>
-            <span id="user-display-name">ภัทรพล ส. (ม.4/1)</span>
+            <span id="user-display-name">เข้าสู่ระบบ</span>
             <i class="ph-bold ph-caret-down text-xs opacity-70"></i>
           </button>
 
           <!-- Dropdown Menu Box -->
           <div id="student-dropdown-menu" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-apple-depth hairline-border p-2 z-50 transition-all duration-200">
-            <!-- Student Mini Profile Header -->
             <div class="p-3 bg-gray-50 rounded-xl mb-1.5">
-              <div class="text-xs font-bold text-apple-textPrimary" id="dropdown-student-name">ภัทรพล สิทธิไพศาล</div>
-              <div class="text-[11px] text-apple-textSecondary" id="dropdown-student-school">รร.สาธิตมหาวิทยาลัย • ม.4/1</div>
-              <div class="text-[10px] text-gray-400 font-mono mt-0.5 truncate" id="dropdown-student-email">pattarapol.m4@gmail.com</div>
+              <div class="text-xs font-bold text-apple-textPrimary" id="dropdown-student-name">ยังไม่ได้เข้าสู่ระบบ</div>
+              <div class="text-[11px] text-apple-textSecondary" id="dropdown-student-school">กรุณาเข้าสู่ระบบเพื่อบันทึกผลการทำแบบฝึกหัด</div>
+              <div class="text-[10px] text-gray-400 font-mono mt-0.5 truncate" id="dropdown-student-email">-</div>
             </div>
 
-            <!-- Menu Actions -->
             <div class="space-y-0.5 text-xs">
               <button onclick="showView('certificate'); closeStudentDropdown();" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 flex items-center space-x-2 text-apple-textPrimary font-medium">
                 <i class="ph-bold ph-certificate text-blue-600 text-sm"></i>
                 <span>ดูเกียรติบัตร ม.4 ของฉัน</span>
               </button>
               <button onclick="toggleAuthModal(); closeStudentDropdown();" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 flex items-center space-x-2 text-apple-textPrimary font-medium">
-                <i class="ph-bold ph-arrows-left-right text-amber-600 text-sm"></i>
-                <span>สลับบัญชีผู้ใช้งาน (Switch Account)</span>
+                <i class="ph-bold ph-sign-in text-blue-600 text-sm" id="auth-menu-icon"></i>
+                <span id="auth-menu-text">เข้าสู่ระบบ / สลับบัญชี</span>
               </button>
               <button onclick="requestTeacherAccess(); closeStudentDropdown();" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 flex items-center space-x-2 text-apple-textPrimary font-medium lg:hidden">
                 <i class="ph-bold ph-chalkboard-teacher text-indigo-600 text-sm"></i>
                 <span>ระบบคุณครู (รหัสผ่าน 1234)</span>
               </button>
 
-              <div class="border-t border-gray-100 my-1"></div>
+              <div id="logout-divider" class="hidden border-t border-gray-100 my-1"></div>
 
-              <!-- ปุ่ม Logout ออกจากระบบ ชัดเจน -->
-              <button onclick="performLogout()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-red-50 text-red-600 flex items-center space-x-2 font-bold transition">
+              <button id="logout-button" onclick="performLogout()" class="hidden w-full text-left px-3 py-2 rounded-lg hover:bg-red-50 text-red-600 flex items-center space-x-2 font-bold transition">
                 <i class="ph-bold ph-sign-out text-base text-red-600"></i>
                 <span>ออกจากระบบ (Logout)</span>
               </button>
@@ -256,7 +251,7 @@
             Academic English Mastery.
           </h1>
           <p class="mt-2 text-sm sm:text-base text-apple-textSecondary leading-relaxed">
-            ระบบแบบฝึกหัดภาษาอังกฤษออนไลน์ Get INVOLVED! ม.4 ครอบคลุม Unit 5 ถึง Unit 8 พร้อมระบบเกียรติบัตรอิเล็กทรอนิกส์ (Progressive E-Certificate) ที่ค่อยๆ ปลดล็อกชื่อและตราประทับตามจำนวนบทเรียนที่สำเร็จ
+            ระบบแบบฝึกหัดภาษาอังกฤษออนไลน์ Get INVOLVED! ม.4 ครอบคลุม Unit 5 ถึง Unit 8 พร้อมระบบเกียรติบัตรอิเล็กทรอนิกส์ (Progressive E-Certificate) ที่ค่อยๆ ปลดล็อกชื่อและตราประทับตามจำนวนบทเรียนที่สำเร็จของแต่ละบัญชี
           </p>
         </div>
         <div class="flex flex-col sm:flex-row gap-3 relative z-10 w-full sm:w-auto">
@@ -340,7 +335,7 @@
             <span>TWP Progressive E-Certificate 2.0 • ระบบปลดล็อกเกียรติบัตรต่อเนื่อง</span>
           </div>
           <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-apple-textPrimary">เกียรติบัตรรับรองผลการประเมิน ม.4</h2>
-          <p class="text-xs sm:text-sm text-apple-textSecondary leading-relaxed">
+          <p class="text-xs sm:text-sm text-apple-textSecondary leading-relaxed" id="cert-desc-text">
             ชื่อนักเรียนและตราประทับรับรองจะได้รับการปลดล็อกเพิ่มขึ้นเรื่อยๆ ตามจำนวนบทที่ทำสำเร็จครบ 4 บทเรียน เพื่อเป็นแรงบันดาลใจในการศึกษา
           </p>
         </div>
@@ -368,7 +363,7 @@
       </div>
     </div>
 
-    <!-- VIEW 4: TEACHER DASHBOARD (ต้องใส่รหัสผ่าน 1234 เพื่อปลดล็อก) -->
+    <!-- VIEW 4: TEACHER DASHBOARD -->
     <div id="view-teacher" class="hidden space-y-6">
       <div class="bg-white p-6 sm:p-8 rounded-3xl hairline-border shadow-apple-card space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-5">
@@ -452,7 +447,7 @@
 
   </main>
 
-  <!-- MODAL: Teacher PIN/Password Authentication (รหัสผ่าน 1234 มาตรฐาน ม.1-3) -->
+  <!-- MODAL: Teacher PIN/Password Authentication -->
   <div id="teacherAuthModal" class="hidden fixed inset-0 z-50 bg-black/45 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-apple-depth hairline-border space-y-5 text-center relative">
       <button onclick="closeTeacherAuthModal()" class="absolute top-5 right-5 text-gray-400 hover:text-black text-lg">✕</button>
@@ -501,16 +496,21 @@
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-apple-textSecondary mb-1">รหัสผ่าน (Password)</label>
-          <input type="password" id="auth-password-input" placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs bg-gray-50 focus:bg-white focus:ring-2 focus:ring-apple-accent outline-none">
+          <label class="block text-xs font-semibold text-apple-textSecondary mb-1">ชื่อ-นามสกุล (สำหรับออกเกียรติบัตร)</label>
+          <input type="text" id="auth-name-input" placeholder="เช่น ภัทรพล สิทธิไพศาล" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs bg-gray-50 focus:bg-white focus:ring-2 focus:ring-apple-accent outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-apple-textSecondary mb-1">โรงเรียน / สถานศึกษา</label>
+          <input type="text" id="auth-school-input" placeholder="เช่น รร.สาธิตมหาวิทยาลัย" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs bg-gray-50 focus:bg-white focus:ring-2 focus:ring-apple-accent outline-none">
         </div>
 
         <div class="pt-2 flex flex-col gap-2">
           <button onclick="performLogin()" class="tactile-btn w-full py-2.5 rounded-xl bg-apple-accent text-white text-xs font-semibold shadow-apple-btn-primary">
-            เข้าสู่ระบบ (Sign In)
+            เข้าสู่ระบบและเริ่มเรียน (Sign In)
           </button>
           <button onclick="loginAsDemo()" class="tactile-btn w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-apple-textPrimary text-xs font-semibold shadow-apple-sm">
-            ทดลองใช้งานแบบนักเรียนสาธิต (Demo Student)
+            ทดลองใช้งานด้วยบัญชีตัวอย่าง (Demo Student)
           </button>
         </div>
       </div>
@@ -529,14 +529,7 @@
         <div>
           <label class="block font-semibold text-apple-textSecondary mb-1">Google Apps Script Web App URL</label>
           <input type="url" id="gas-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs bg-gray-50 focus:bg-white focus:ring-2 focus:ring-apple-accent outline-none font-mono">
-          <p class="text-[11px] text-gray-400 mt-1">คัดลอกจาก Google Sheets เมนู Deploy -> Web App (TWP_GetInvolved_M4_Database)</p>
-        </div>
-
-        <div class="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 space-y-1">
-          <div class="font-bold text-apple-accent">สถานะการเชื่อมต่อ:</div>
-          <p class="text-gray-600 leading-relaxed font-mono">
-            TWP_GetInvolved_M4_Database พร้อมใช้งานในระบบทันที
-          </p>
+          <p class="text-[11px] text-gray-400 mt-1">TWP_GetInvolved_M4_Database Web App</p>
         </div>
 
         <div class="pt-2 flex justify-end gap-2">
@@ -553,52 +546,37 @@
 
   <!-- APPLICATION LOGIC SCRIPT -->
   <script>
-    // Embedded Deployed Google Apps Script URL for TWP_GetInvolved_M4_Database
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbyZ2vQLv9lTlrD1Wt77Qw9vzYr4LwtRgOYbJupFvhlVkSa75OUX5TU6jddM9JXUS_MF/exec";
     let gasUrl = localStorage.getItem('twp_m4_gas_url') || DEFAULT_GAS_URL;
 
-    // Teacher PIN (มาตรฐาน 1234 เหมือน ม.1-3)
     let teacherPin = '1234';
     let isTeacherAuthenticated = false;
 
-    // Student Profile State
+    // Student Profile State (Default is strictly LOGGED OUT / GUEST)
     let currentStudent = JSON.parse(localStorage.getItem('twp_m4_student') || 'null') || {
-      studentId: "STD-M4-001",
-      name: "ภัทรพล สิทธิไพศาล",
-      school: "รร.สาธิตมหาวิทยาลัย",
+      studentId: "",
+      name: "",
+      school: "",
       grade: "ม.4",
-      room: "1",
-      email: "pattarapol.m4@gmail.com",
-      isLoggedIn: true
+      room: "",
+      email: "",
+      isLoggedIn: false
     };
-
-    // Tracking unit progress
-    let unitProgress = JSON.parse(localStorage.getItem('twp_m4_unit_progress') || '{}');
-    if (!unitProgress.unit5) unitProgress.unit5 = { completed: true, score: 12, max: 12 };
-    if (!unitProgress.unit6) unitProgress.unit6 = { completed: false, score: 0, max: 12 };
-    if (!unitProgress.unit7) unitProgress.unit7 = { completed: false, score: 0, max: 12 };
-    if (!unitProgress.unit8) unitProgress.unit8 = { completed: false, score: 0, max: 12 };
 
     let activeUnitId = "unit5";
     let activeSectionIdx = 0;
-    
-    // Store user answers keyed by question ID: { qId: answerValue }
     let userAnswers = {};
-    // Store section submission states: { "unit5_0": true }
     let submittedSections = {};
 
-    // Sample Student Roster for local demonstration
     let rosterDB = [
       { studentId: "STD-M4-001", name: "ภัทรพล สิทธิไพศาล", school: "รร.สาธิตมหาวิทยาลัย", grade: "ม.4", u5: "12/12", u6: "11/12", u7: "12/12", u8: "11/12", status: "ได้รับเกียรติบัตร" },
       { studentId: "STD-M4-002", name: "กัญญาณัฐ วงศ์สุวรรณ", school: "รร.เตรียมอุดมศึกษาพัฒนาการ", grade: "ม.4", u5: "11/12", u6: "10/12", u7: "-", u8: "-", status: "กำลังศึกษา" },
       { studentId: "STD-M4-003", name: "ธนกฤต เมธาพร", school: "รร.สวนกุหลาบวิทยาลัย", grade: "ม.4", u5: "9/12", u6: "-", u7: "-", u8: "-", status: "กำลังศึกษา" }
     ];
 
-    // Preload TWP Logo for Canvas Certificate
     const twpLogoImg = new Image();
     twpLogoImg.src = 'assets/twp-logo.png';
 
-    // Close student dropdown when clicking outside
     document.addEventListener('click', (e) => {
       const container = document.getElementById('student-menu-container');
       if (container && !container.contains(e.target)) {
@@ -608,16 +586,48 @@
 
     // Initialization
     window.addEventListener('DOMContentLoaded', () => {
-      initCurriculumGrid();
       updateUserDisplay();
+      initCurriculumGrid();
       renderScoresTable();
       updateCertificateStatus();
       drawCertificateCanvas();
     });
 
+    // Student Unit Status Function (Modelled directly on M.1-3: strictly tied to logged-in user)
+    function getStudentUnitStatus() {
+      const units = {
+        unit5: { done: false, score: 0, total: 12, pct: 0 },
+        unit6: { done: false, score: 0, total: 12, pct: 0 },
+        unit7: { done: false, score: 0, total: 12, pct: 0 },
+        unit8: { done: false, score: 0, total: 12, pct: 0 }
+      };
+
+      // If user is not logged in, return all uncompleted (0%)
+      if (!currentStudent || !currentStudent.isLoggedIn || !currentStudent.email) {
+        return units;
+      }
+
+      const emailKey = currentStudent.email.trim().toLowerCase();
+      const saved = JSON.parse(localStorage.getItem('twp_m4_progress_' + emailKey) || '{}');
+      ['unit5', 'unit6', 'unit7', 'unit8'].forEach(u => {
+        if (saved[u] && saved[u].completed) {
+          units[u] = { done: true, score: saved[u].score || 12, total: 12, pct: Math.round(((saved[u].score || 12) / 12) * 100) };
+        }
+      });
+      return units;
+    }
+
+    function getCompletedUnitsCount() {
+      const status = getStudentUnitStatus();
+      let count = 0;
+      ['unit5', 'unit6', 'unit7', 'unit8'].forEach(u => {
+        if (status[u].done) count++;
+      });
+      return count;
+    }
+
     // Navigation Views
     function showView(viewName) {
-      // ป้องกันการเข้าถึง Teacher Dashboard หากยังไม่ได้ใส่รหัสผ่าน 1234
       if (viewName === 'teacher' && !isTeacherAuthenticated) {
         requestTeacherAccess();
         return;
@@ -636,6 +646,7 @@
         }
       });
       if (viewName === 'certificate') {
+        updateCertificateStatus();
         drawCertificateCanvas();
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -687,7 +698,7 @@
       alert("ออกจากระบบควบคุมของคุณครูเรียบร้อยแล้ว");
     }
 
-    // Student Dropdown Menu
+    // Student Dropdown Menu & Logout System
     function toggleStudentDropdown(e) {
       if (e) e.stopPropagation();
       const menu = document.getElementById('student-dropdown-menu');
@@ -704,29 +715,45 @@
       if (!confirm("คุณต้องการออกจากระบบใช่หรือไม่?")) {
         return;
       }
+      // Reset state completely to unauthenticated
       currentStudent = {
         studentId: "",
-        name: "ผู้เยี่ยมชม (Guest)",
-        school: "-",
+        name: "",
+        school: "",
         grade: "ม.4",
-        room: "-",
+        room: "",
         email: "",
         isLoggedIn: false
       };
       localStorage.removeItem('twp_m4_student');
+      userAnswers = {};
+      submittedSections = {};
+
+      // Immediately refresh all UI components
       updateUserDisplay();
+      initCurriculumGrid();
+      updateCertificateStatus();
       drawCertificateCanvas();
-      alert("ออกจากระบบเรียบร้อยแล้ว ท่านสามารถเข้าสู่ระบบใหม่ได้ตลอดเวลาครับ");
+      showView('curriculum');
+      alert("ออกจากระบบเรียบร้อยแล้ว ข้อมูลและใบประกาศนียบัตรถูกรีเซ็ตกลับสู่สถานะเริ่มต้นแล้วครับ");
     }
 
     function updateUserDisplay() {
-      const isLogged = currentStudent && currentStudent.isLoggedIn;
+      const isLogged = currentStudent && currentStudent.isLoggedIn && currentStudent.email;
       const displayName = isLogged ? `${currentStudent.name} (${currentStudent.grade}/${currentStudent.room || '1'})` : 'เข้าสู่ระบบ';
       
       document.getElementById('user-display-name').textContent = displayName;
       document.getElementById('dropdown-student-name').textContent = isLogged ? currentStudent.name : 'ยังไม่ได้เข้าสู่ระบบ';
-      document.getElementById('dropdown-student-school').textContent = isLogged ? `${currentStudent.school} • ${currentStudent.grade}/${currentStudent.room || '1'}` : 'กรุณาเข้าสู่ระบบเพื่อบันทึกคะแนน';
+      document.getElementById('dropdown-student-school').textContent = isLogged ? `${currentStudent.school} • ${currentStudent.grade}/${currentStudent.room || '1'}` : 'กรุณาเข้าสู่ระบบเพื่อบันทึกผลการทำแบบฝึกหัด';
       document.getElementById('dropdown-student-email').textContent = isLogged ? currentStudent.email : '-';
+
+      // Toggle Logout visibility
+      const logoutBtn = document.getElementById('logout-button');
+      const logoutDiv = document.getElementById('logout-divider');
+      const authMenuText = document.getElementById('auth-menu-text');
+      if (logoutBtn) logoutBtn.classList.toggle('hidden', !isLogged);
+      if (logoutDiv) logoutDiv.classList.toggle('hidden', !isLogged);
+      if (authMenuText) authMenuText.textContent = isLogged ? 'สลับบัญชีผู้ใช้งาน' : 'เข้าสู่ระบบ (Sign In)';
     }
 
     // 1. Initialize Curriculum Grid
@@ -734,10 +761,11 @@
       const grid = document.getElementById('curriculum-grid');
       if (!grid || typeof M4_UNITS_DATA === 'undefined') return;
 
+      const status = getStudentUnitStatus();
       grid.innerHTML = '';
       Object.keys(M4_UNITS_DATA).forEach(unitKey => {
         const unit = M4_UNITS_DATA[unitKey];
-        const isDone = unitProgress[unitKey] && unitProgress[unitKey].completed;
+        const isDone = status[unitKey].done;
         const card = document.createElement('div');
         card.className = 'bg-white p-6 rounded-3xl hairline-border shadow-apple-card hover:shadow-apple-depth transition duration-300 relative group flex flex-col justify-between';
         
@@ -1092,11 +1120,15 @@
       // Check if all 3 parts of this unit are submitted
       const allPartsSubmitted = [0, 1, 2].every(idx => submittedSections[`${activeUnitId}_${idx}`]);
       if (allPartsSubmitted) {
-        unitProgress[activeUnitId] = { completed: true, score: 12, max: 12 };
-        localStorage.setItem('twp_m4_unit_progress', JSON.stringify(unitProgress));
+        if (currentStudent && currentStudent.isLoggedIn && currentStudent.email) {
+          const emailKey = currentStudent.email.trim().toLowerCase();
+          const savedProgress = JSON.parse(localStorage.getItem('twp_m4_progress_' + emailKey) || '{}');
+          savedProgress[activeUnitId] = { completed: true, score: 12, max: 12 };
+          localStorage.setItem('twp_m4_progress_' + emailKey, JSON.stringify(savedProgress));
+          syncScoreToGoogleSheet(activeUnitId, partScore);
+        }
         updateCertificateStatus();
         drawCertificateCanvas();
-        syncScoreToGoogleSheet(activeUnitId, partScore);
       }
 
       renderCurrentSection();
@@ -1106,8 +1138,8 @@
 
     // 5. PROGRESSIVE NAME REVEAL FORMULA (From M.1-3 Core Engine)
     function getProgressiveRevealedName(fullName, completedUnitsCount, totalUnits = 4) {
-      if (!fullName || !fullName.trim()) {
-        return { revealed: '', masked: '● ● ● ● ●', full: 'นักเรียน', pct: 0, completedCount: 0, isComplete: false };
+      if (!fullName || !fullName.trim() || !currentStudent.isLoggedIn) {
+        return { revealed: '', masked: '● ● ● ● ● ● ● ●', full: '', pct: 0, completedCount: 0, isComplete: false };
       }
       const cleanName = fullName.trim();
       const clusters = cleanName.match(/\P{M}\p{M}*/gu) || Array.from(cleanName);
@@ -1127,7 +1159,7 @@
       }
 
       if (ratio === 0) {
-        const maskCount = Math.min(total, 10);
+        const maskCount = Math.min(total, 8);
         return {
           revealed: '',
           masked: '● '.repeat(maskCount).trim(),
@@ -1153,15 +1185,7 @@
       };
     }
 
-    function getCompletedUnitsCount() {
-      let count = 0;
-      ['unit5', 'unit6', 'unit7', 'unit8'].forEach(u => {
-        if (unitProgress[u] && unitProgress[u].completed) count++;
-      });
-      return count;
-    }
-
-    // 6. High-DPI E-Certificate Canvas Rendering
+    // 6. High-DPI E-Certificate Canvas Rendering (Strictly Synchronized with Logged-in User)
     function drawCertificateCanvas() {
       const canvas = document.getElementById('certificateCanvas');
       if (!canvas) return;
@@ -1170,9 +1194,12 @@
       const w = canvas.width = 1200;
       const h = canvas.height = 850;
 
-      const completedCount = getCompletedUnitsCount();
-      const revealInfo = getProgressiveRevealedName(currentStudent.name, completedCount, 4);
+      const isLogged = currentStudent && currentStudent.isLoggedIn && currentStudent.email;
+      const completedCount = isLogged ? getCompletedUnitsCount() : 0;
+      const studentName = isLogged ? currentStudent.name : '';
+      const revealInfo = getProgressiveRevealedName(studentName, completedCount, 4);
 
+      // Update Nav percentage: strictly 0% when logged out
       const navPct = document.getElementById('nav-cert-pct');
       if (navPct) navPct.textContent = `${revealInfo.pct}%`;
 
@@ -1264,11 +1291,22 @@
       ctx.fill();
 
       // 7. PROGRESSIVE STUDENT NAME REVEAL
-      if (revealInfo.isComplete) {
+      if (!isLogged) {
+        // GUEST / LOGGED OUT STATE
+        ctx.fillStyle = '#9CA3AF';
+        ctx.font = '32px Prompt, monospace, sans-serif';
+        ctx.fillText('● ● ● ● ● ● ● ●', w / 2, 375);
+
+        ctx.fillStyle = '#EF4444';
+        ctx.font = 'bold 14px Prompt, sans-serif';
+        ctx.fillText('🔒 กรุณาเข้าสู่ระบบเพื่อสะสมความก้าวหน้าและปลดล็อกชื่อบนเกียรติบัตร (0%)', w / 2, 412);
+      } else if (revealInfo.isComplete) {
+        // Complete 100% Name
         ctx.fillStyle = '#1D1D1F';
         ctx.font = 'bold 44px Prompt, Sarabun, sans-serif';
         ctx.fillText(revealInfo.full, w / 2, 375);
       } else {
+        // Partial Name with mystery dots
         ctx.font = 'bold 42px Prompt, Sarabun, sans-serif';
         const revText = revealInfo.revealed;
         const maskText = revealInfo.masked ? ' ' + revealInfo.masked : '';
@@ -1296,7 +1334,8 @@
       // 8. School & Class
       ctx.fillStyle = '#6E6E73';
       ctx.font = '500 18px Prompt, Sarabun, sans-serif';
-      ctx.fillText(`${currentStudent.school} • ระดับชั้นมัธยมศึกษาปีที่ 4 เตรียมขึ้นระดับอุดมศึกษา`, w / 2, revealInfo.isComplete ? 425 : 445);
+      const schoolText = isLogged ? `${currentStudent.school} • ระดับชั้นมัธยมศึกษาปีที่ 4 เตรียมขึ้นระดับอุดมศึกษา` : 'ระดับชั้นมัธยมศึกษาปีที่ 4 เตรียมขึ้นระดับอุดมศึกษา (ยังไม่ได้เข้าสู่ระบบ)';
+      ctx.fillText(schoolText, w / 2, isLogged && revealInfo.isComplete ? 425 : 445);
 
       // 9. Course Description
       ctx.fillStyle = '#2C2C2E';
@@ -1329,7 +1368,7 @@
 
       // Center Official Seal
       ctx.textAlign = 'center';
-      if (revealInfo.isComplete) {
+      if (isLogged && revealInfo.isComplete) {
         ctx.fillStyle = '#D97706';
         ctx.beginPath();
         ctx.arc(w / 2, 720, 28, 0, Math.PI * 2);
@@ -1349,7 +1388,7 @@
         ctx.stroke();
         ctx.fillStyle = '#6B7280';
         ctx.font = 'bold 11px Inter, sans-serif';
-        ctx.fillText('IN PROGRESS', w / 2, 724);
+        ctx.fillText(isLogged ? 'IN PROGRESS' : 'LOCKED', w / 2, 724);
       }
 
       // Right Issue Date & Serial
@@ -1359,10 +1398,16 @@
       ctx.fillText('วันที่อนุมัติ: 25 ตุลาคม 2569', w - 100, 715);
       ctx.fillStyle = '#86868B';
       ctx.font = 'mono 12px Inter, monospace';
-      ctx.fillText(revealInfo.isComplete ? 'Serial: TWP-M4-CERT-2026-08892' : 'Serial: PENDING COMPLETION', w - 100, 738);
+      ctx.fillText(isLogged && revealInfo.isComplete ? 'Serial: TWP-M4-CERT-2026-08892' : 'Serial: PENDING COMPLETION', w - 100, 738);
     }
 
     function downloadCertificateImage() {
+      const isLogged = currentStudent && currentStudent.isLoggedIn && currentStudent.email;
+      if (!isLogged) {
+        alert("⚠️ กรุณาเข้าสู่ระบบก่อนดาวน์โหลดใบประกาศนียบัตร");
+        toggleAuthModal();
+        return;
+      }
       const completedCount = getCompletedUnitsCount();
       if (completedCount < 4) {
         if (!confirm(`คุณสำเร็จการทำแบบฝึกหัดไปแล้ว ${completedCount}/4 บท (ปลดล็อกชื่อ ${Math.round(completedCount / 4 * 100)}%)\n\nต้องการดาวน์โหลดภาพเกียรติบัตรในสถานะปัจจุบันหรือไม่?`)) {
@@ -1382,27 +1427,29 @@
       if (!grid) return;
       grid.innerHTML = '';
 
+      const isLogged = currentStudent && currentStudent.isLoggedIn && currentStudent.email;
+      const status = getStudentUnitStatus();
       const units = ['unit5', 'unit6', 'unit7', 'unit8'];
       const unitNames = ['Unit 5: Art', 'Unit 6: Travel', 'Unit 7: Choices', 'Unit 8: Media'];
 
       units.forEach((u, i) => {
-        const isDone = unitProgress[u] && unitProgress[u].completed;
+        const isDone = isLogged && status[u].done;
         const item = document.createElement('div');
         item.className = 'p-3.5 rounded-2xl bg-white hairline-border shadow-apple-sm text-center space-y-1';
         item.innerHTML = `
           <div class="text-[11px] font-bold text-apple-textSecondary">${unitNames[i]}</div>
           <div class="text-xs font-semibold ${isDone ? 'text-green-600' : 'text-gray-400'} flex items-center justify-center gap-1">
             <i class="ph-bold ${isDone ? 'ph-check-circle' : 'ph-clock'}"></i>
-            <span>${isDone ? 'ผ่านการประเมิน' : 'รอทำแบบฝึกหัด'}</span>
+            <span>${isDone ? 'ผ่านการประเมิน' : (isLogged ? 'รอทำแบบฝึกหัด' : 'รอเข้าสู่ระบบ')}</span>
           </div>
         `;
         grid.appendChild(item);
       });
     }
 
-    // 7. Sync Score to Google Sheet Web App (TWP_GetInvolved_M4_Database)
+    // 7. Sync Score to Google Sheet Web App
     function syncScoreToGoogleSheet(unitKey, score) {
-      if (!gasUrl) return;
+      if (!gasUrl || !currentStudent || !currentStudent.email) return;
       const payload = {
         action: "submit_score",
         email: currentStudent.email,
@@ -1488,23 +1535,31 @@
 
     function performLogin() {
       const email = (document.getElementById('auth-email-input').value || '').trim().toLowerCase();
+      const name = (document.getElementById('auth-name-input').value || '').trim();
+      const school = (document.getElementById('auth-school-input').value || '').trim();
+
       if (!email) {
         alert("กรุณากรอกอีเมลของนักเรียน");
         return;
       }
+
       currentStudent = {
-        studentId: "STD-M4-001",
-        name: email.split('@')[0],
-        school: "รร.สาธิตมหาวิทยาลัย",
+        studentId: "STD-M4-" + Math.floor(100 + Math.random() * 900),
+        name: name || email.split('@')[0],
+        school: school || "รร.สาธิตมหาวิทยาลัย",
         grade: "ม.4",
         room: "1",
         email: email,
         isLoggedIn: true
       };
       localStorage.setItem('twp_m4_student', JSON.stringify(currentStudent));
+      
       updateUserDisplay();
-      toggleAuthModal();
+      initCurriculumGrid();
+      updateCertificateStatus();
       drawCertificateCanvas();
+      toggleAuthModal();
+      alert(`เข้าสู่ระบบสำเร็จในชื่อ: ${currentStudent.name}\nความก้าวหน้าและเกียรติบัตรจะถูกบันทึกผูกกับบัญชีนี้เรียบร้อยครับ`);
     }
 
     function loginAsDemo() {
@@ -1518,9 +1573,19 @@
         isLoggedIn: true
       };
       localStorage.setItem('twp_m4_student', JSON.stringify(currentStudent));
+
+      // Simulate 1 unit completed for demo account (25%)
+      const saved = {
+        unit5: { completed: true, score: 12, max: 12 }
+      };
+      localStorage.setItem('twp_m4_progress_' + currentStudent.email, JSON.stringify(saved));
+
       updateUserDisplay();
-      toggleAuthModal();
+      initCurriculumGrid();
+      updateCertificateStatus();
       drawCertificateCanvas();
+      toggleAuthModal();
+      alert(`เข้าสู่ระบบบัญชีตัวอย่าง: ${currentStudent.name} (ปลดล็อก 1 บทเรียน 25%)`);
     }
 
     function toggleConfigModal() {
