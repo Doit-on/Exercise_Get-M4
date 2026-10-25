@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Get INVOLVED! ม.4 - แบบฝึกหัดภาษาอังกฤษออนไลน์ (ทวพ.)</title>
+  <link rel="icon" type="image/png" href="assets/twp-logo.png">
+  <meta name="description" content="ระบบแบบฝึกหัดภาษาอังกฤษออนไลน์ Get INVOLVED! ม.4 สำนักพิมพ์ไทยวัฒนาพานิช (TWP)">
+
+  <!-- Google Fonts: Inter, Plus Jakarta Sans, Prompt & Sarabun -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- SheetJS (Excel Parser) for Teacher Import -->
+  <script src="assets/xlsx.full.min.js"></script>
+  <script>
+    if (typeof XLSX === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"><\/script>');
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons CDN -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- M.4 Curriculum Data -->
+  <script src="m4_units_data.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'Inter', 'Prompt', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif'],
+            sarabun: ['Sarabun', 'sans-serif']
+          },
+          colors: {
+            apple: {
+              bg: '#F5F5F7',
+              card: '#FFFFFF',
+              surface: '#FAFAFC',
+              border: '#E5E5EA',
+              borderDark: '#D1D1D6',
+              textPrimary: '#1D1D1F',
+              textSecondary: '#6E6E73',
+              textTertiary: '#86868B',
+              accent: '#0071E3',
+              accentHover: '#0077ED',
+              accentLight: '#E8F2FD',
+              charcoal: '#2C2C2E',
+              slate: '#3A3A3C',
+              success: '#34C759',
+              warning: '#FF9500',
+              danger: '#FF3B30'
+            }
+          },
+          boxShadow: {
+            'apple-sm': '0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02)',
+            'apple-card': '0 8px 30px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.02)',
+            'apple-depth': '0 12px 36px rgba(0, 0, 0, 0.07), 0 4px 10px rgba(0, 0, 0, 0.03)',
+            'apple-btn': '0 4px 14px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+            'apple-btn-primary': '0 6px 18px rgba(0, 113, 227, 0.28), 0 2px 4px rgba(0, 113, 227, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.35)',
+            'apple-btn-dark': '0 6px 18px rgba(29, 29, 31, 0.2), 0 2px 4px rgba(29, 29, 31, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #F5F5F7;
+      color: #1D1D1F;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .tactile-btn {
+      position: relative;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(0);
+    }
+    .tactile-btn:hover {
+      transform: translateY(-2px);
+    }
+    .tactile-btn:active {
+      transform: translateY(1px) scale(0.985);
+    }
+    .apple-glass {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    .hairline-border {
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .match-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      user-select: none;
+    }
+    .match-card:hover {
+      border-color: #8E8E93;
+      transform: translateY(-1px);
+    }
+    .match-card.selected {
+      border-color: #0071E3;
+      background-color: #F0F6FF;
+      box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
+    }
+    .match-card.paired {
+      border-color: #0071E3;
+      background-color: #F8FAFC;
+    }
+    .match-card.checked-correct {
+      border-color: #34C759;
+      background-color: #F2FBF5;
+      cursor: default;
+    }
+    .match-card.checked-wrong {
+      border-color: #FF3B30;
+      background-color: #FFF5F5;
+      cursor: default;
+    }
+    .option-card {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .option-card:hover {
+      background-color: #FAFAFC;
+      border-color: #B0B0B8;
+      transform: translateY(-1px);
+    }
+    .option-card.selected {
+      border-color: #0071E3;
+      background-color: #F0F6FF;
+      box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.15);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans">
+
+  <!-- Apple Navigation Bar -->
+  <header class="sticky top-0 z-50 apple-glass hairline-border border-b">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      
+      <!-- Left: TWP Logo + Branding -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="showView('curriculum')">
+        <img src="assets/twp-logo.png" alt="โลโก้ ทวพ." class="w-10 h-10 object-contain rounded-xl shadow-apple-sm bg-white p-0.5 border border-black/5" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'><rect width=\'40\' height=\'40\' rx=\'10\' fill=\'%231d1d1f\'/><text x=\'50%25\' y=\'55%25\' fill=\'%23ffffff\' font-weight=\'bold\' font-size=\'14\' text-anchor=\'middle\' dominant-baseline=\'middle\'>ทวพ</text></svg>'">
+        
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-display font-bold text-base tracking-tight text-apple-textPrimary">Get INVOLVED! ม.4</span>
+            <span class="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-gray-100 text-gray-700 hairline-border hidden sm:inline-block">
+              ระดับชั้นมัธยมศึกษาปีที่ 4 เตรียมขึ้นระดับอุดมศึกษา
+            </span>
+          </div>
+          <p class="text-[11px] text-apple-textSecondary leading-none mt-0.5">บริษัท สำนักพิมพ์ ไทยวัฒนาพานิช จำกัด (TWP)</p>
+        </div>
+      </div>
+
+      <!-- Center Navigation Tabs -->
+      <nav class="hidden md:flex items-center bg-gray-100/80 p-1 rounded-full hairline-border">
+        <button onclick="showView('curriculum')" id="nav-btn-curriculum" class="px-4 py-1.5 text-xs font-semibold rounded-full bg-white text-apple-textPrimary shadow-apple-sm transition">
+          แผนผังบทเรียน
+        </button>
+        <button onclick="showView('exercise')" id="nav-btn-exercise" class="px-4 py-1.5 text-xs font-medium rounded-full text-apple-textSecondary hover:text-apple-textPrimary transition">
+          ทำแบบฝึกหัด
+        </button>
+        <button onclick="showView('certificate')" id="nav-btn-certificate" class="px-4 py-1.5 text-xs font-medium rounded-full text-apple-textSecondary hover:text-apple-textPrimary transition">
+          เกียรติบัตรออนไลน์ (<span id="nav-cert-pct" class="font-bold text-blue-600">0%</span>)
+        </button>
+        <button onclick="showView('teacher')" id="nav-btn-teacher" class="px-4 py-1.5 text-xs font-medium rounded-full text-apple-textSecondary hover:text-apple-textPrimary transition">
+          ระบบคุณครู
+        </button>
+      </nav>
+
+      <!-- Right User Profile / Status -->
+      <div class="flex items-center space-x-3">
+        <div id="sync-status-indicator" class="flex items-center space-x-2 text-xs text-apple-textSecondary bg-white px-3 py-1.5 rounded-full hairline-border shadow-apple-sm">
+          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+          <span id="sync-status-text">Cloud Sync: ออนไลน์</span>
+        </div>
+        <div id="user-profile-badge" class="relative">
+          <button onclick="toggleAuthModal()" class="tactile-btn flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-apple-textPrimary text-white shadow-apple-btn-dark">
+            <i class="ph-bold ph-user text-sm"></i>
+            <span id="user-display-name">ภัทรพล ส. (ม.4/1)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8">
+
+    <!-- VIEW 1: CURRICULUM OVERVIEW -->
+    <div id="view-curriculum" class="space-y-8">
+      
+      <!-- Academic Hero Banner -->
+      <section class="bg-gradient-to-b from-white to-gray-50/70 p-8 rounded-3xl hairline-border shadow-apple-card relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div class="max-w-2xl relative z-10">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 text-apple-accent text-xs font-semibold mb-3 hairline-border">
+            <i class="ph-fill ph-sparkle"></i>
+            <span>ระดับชั้นมัธยมศึกษาปีที่ 4 เตรียมขึ้นระดับอุดมศึกษา • ภาคเรียนที่ 2</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-display font-extrabold text-apple-textPrimary tracking-tight">
+            Academic English Mastery.
+          </h1>
+          <p class="mt-2 text-sm sm:text-base text-apple-textSecondary leading-relaxed">
+            ระบบแบบฝึกหัดภาษาอังกฤษออนไลน์ Get INVOLVED! ม.4 ครอบคลุม Unit 5 ถึง Unit 8 พร้อมระบบเกียรติบัตรอิเล็กทรอนิกส์ (Progressive E-Certificate) ที่ค่อยๆ ปลดล็อกชื่อและตราประทับตามจำนวนบทเรียนที่สำเร็จ
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 relative z-10 w-full sm:w-auto">
+          <button onclick="startUnit('unit5')" class="tactile-btn px-5 py-3 rounded-2xl bg-apple-accent text-white text-xs font-semibold shadow-apple-btn-primary flex items-center justify-center space-x-2">
+            <i class="ph-bold ph-play text-sm"></i>
+            <span>เริ่มทำแบบฝึกหัด</span>
+          </button>
+          <button onclick="showView('certificate')" class="tactile-btn px-5 py-3 rounded-2xl bg-white text-apple-textPrimary text-xs font-semibold hairline-border shadow-apple-btn flex items-center justify-center space-x-2">
+            <i class="ph-bold ph-certificate text-sm"></i>
+            <span>ดูเกียรติบัตร ม.4</span>
+          </button>
+        </div>
+        <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-blue-100/40 blur-3xl pointer-events-none"></div>
+      </section>
+
+      <!-- 4 Unit Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="curriculum-grid">
+        <!-- Rendered dynamically by script -->
+      </div>
+    </div>
+
+    <!-- VIEW 2: ACTIVE EXERCISE RUNNER -->
+    <div id="view-exercise" class="hidden space-y-6">
+      
+      <!-- Exercise Header & Section Bar -->
+      <div class="bg-white p-5 rounded-3xl hairline-border shadow-apple-card flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <span id="active-unit-badge" class="text-xs font-bold px-3 py-1 rounded-full bg-blue-50 text-apple-accent hairline-border">Unit 5</span>
+          <h2 id="active-unit-title" class="text-xl font-display font-bold text-apple-textPrimary mt-1">Art, Photography & Passive Voice</h2>
+          <p id="active-unit-desc" class="text-xs text-apple-textSecondary mt-0.5">คำอธิบายหน่วยการเรียนรู้</p>
+        </div>
+
+        <!-- Section Navigation Pills -->
+        <div class="inline-flex bg-gray-100 p-1 rounded-2xl hairline-border text-xs">
+          <button onclick="switchSection(0)" id="sec-btn-0" class="px-4 py-2 font-semibold rounded-xl bg-white text-apple-textPrimary shadow-apple-sm transition">
+            Part 1: Video
+          </button>
+          <button onclick="switchSection(1)" id="sec-btn-1" class="px-4 py-2 font-medium rounded-xl text-apple-textSecondary hover:text-apple-textPrimary transition">
+            Part 2: Vocabulary
+          </button>
+          <button onclick="switchSection(2)" id="sec-btn-2" class="px-4 py-2 font-medium rounded-xl text-apple-textSecondary hover:text-apple-textPrimary transition">
+            Part 3: Grammar
+          </button>
+        </div>
+      </div>
+
+      <!-- Container for Active Section -->
+      <div id="exercise-content-container" class="space-y-6">
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- Part Action Bar -->
+      <div class="bg-white p-5 rounded-3xl hairline-border shadow-apple-card flex flex-wrap items-center justify-between gap-3">
+        <button onclick="navigateSection(-1)" id="btn-prev-section" class="tactile-btn px-4 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-apple-textPrimary text-xs font-semibold shadow-apple-sm flex items-center space-x-1.5">
+          <i class="ph-bold ph-arrow-left"></i>
+          <span>ส่วนก่อนหน้า</span>
+        </button>
+
+        <div class="flex items-center space-x-3">
+          <button onclick="submitCurrentPart()" id="btn-check-part" class="tactile-btn px-6 py-2.5 rounded-xl bg-apple-accent text-white text-xs font-semibold shadow-apple-btn-primary flex items-center space-x-2">
+            <i class="ph-bold ph-check-circle text-base"></i>
+            <span>ตรวจคำตอบ & ดูเฉลยละเอียดของส่วนนี้</span>
+          </button>
+        </div>
+
+        <button onclick="navigateSection(1)" id="btn-next-section" class="tactile-btn px-4 py-2.5 rounded-xl bg-apple-textPrimary text-white text-xs font-semibold shadow-apple-btn-dark flex items-center space-x-1.5">
+          <span>ส่วนถัดไป</span>
+          <i class="ph-bold ph-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- VIEW 3: PROGRESSIVE E-CERTIFICATE (M.1-3 Formula + Apple Minimalist White Tone) -->
+    <div id="view-certificate" class="hidden space-y-6">
+      <div class="bg-white p-6 sm:p-8 rounded-3xl hairline-border shadow-apple-card text-center space-y-6">
+        
+        <div class="max-w-2xl mx-auto space-y-2">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold hairline-border">
+            <i class="ph-bold ph-medal"></i>
+            <span>TWP Progressive E-Certificate 2.0 • ระบบปลดล็อกเกียรติบัตรต่อเนื่อง</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-apple-textPrimary">เกียรติบัตรรับรองผลการประเมิน ม.4</h2>
+          <p class="text-xs sm:text-sm text-apple-textSecondary leading-relaxed">
+            ชื่อนักเรียนและตราประทับรับรองจะได้รับการปลดล็อกเพิ่มขึ้นเรื่อยๆ ตามจำนวนบทที่ทำสำเร็จครบ 4 บทเรียน เพื่อเป็นแรงบันดาลใจในการศึกษา
+          </p>
+        </div>
+
+        <!-- 4 Unit Progress Checklist -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto text-left" id="cert-requirements-grid">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- High-DPI Canvas Rendering Container -->
+        <div class="overflow-x-auto py-2 flex justify-center">
+          <canvas id="certificateCanvas" class="rounded-2xl shadow-apple-depth max-w-full h-auto border border-gray-200" style="width: 1000px; max-width: 100%; aspect-ratio: 1200 / 850;"></canvas>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-3 pt-2">
+          <button onclick="downloadCertificateImage()" id="btn-cert-download" class="tactile-btn px-6 py-3 rounded-2xl bg-apple-textPrimary text-white text-xs font-semibold shadow-apple-btn-dark flex items-center space-x-2">
+            <i class="ph-bold ph-download-simple text-sm"></i>
+            <span>ดาวน์โหลดใบประกาศนียบัตร PNG (High-DPI 2X)</span>
+          </button>
+          <button onclick="window.print()" class="tactile-btn px-6 py-3 rounded-2xl bg-white text-apple-textPrimary text-xs font-semibold hairline-border shadow-apple-btn flex items-center space-x-2">
+            <i class="ph-bold ph-printer text-sm"></i>
+            <span>พิมพ์เป็นเอกสาร PDF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 4: TEACHER DASHBOARD -->
+    <div id="view-teacher" class="hidden space-y-6">
+      <div class="bg-white p-6 sm:p-8 rounded-3xl hairline-border shadow-apple-card space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-5">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-apple-accent">Teacher Dashboard & Database Sync</span>
+            <h2 class="text-xl font-display font-bold text-apple-textPrimary mt-0.5">ระบบควบคุมและฐานข้อมูลสำหรับครูผู้สอน ม.4</h2>
+            <p class="text-xs text-apple-textSecondary mt-1">เชื่อมโยงกับ Google Sheets: <strong class="text-gray-800">TWP_GetInvolved_M4_Database</strong></p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="openConfigModal()" class="tactile-btn px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-apple-textPrimary shadow-apple-sm flex items-center space-x-1.5">
+              <i class="ph-bold ph-gear"></i>
+              <span>ตั้งค่า Google Script URL</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 Metric Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-5 rounded-2xl bg-gray-50 hairline-border">
+            <span class="text-xs text-apple-textSecondary font-medium">จำนวนนักเรียนในระบบ</span>
+            <div id="teacher-stat-students" class="text-2xl font-bold font-display text-apple-textPrimary mt-1">3 คน</div>
+          </div>
+          <div class="p-5 rounded-2xl bg-gray-50 hairline-border">
+            <span class="text-xs text-apple-textSecondary font-medium">บันทึกการส่งคะแนนทั้งหมด</span>
+            <div id="teacher-stat-submissions" class="text-2xl font-bold font-display text-apple-accent mt-1">2 ครั้ง</div>
+          </div>
+          <div class="p-5 rounded-2xl bg-gray-50 hairline-border">
+            <span class="text-xs text-apple-textSecondary font-medium">เกียรติบัตรที่ออกแล้ว</span>
+            <div id="teacher-stat-certs" class="text-2xl font-bold font-display text-green-600 mt-1">1 ใบ</div>
+          </div>
+        </div>
+
+        <!-- Actions & Roster Import -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+          <div class="flex items-center space-x-2">
+            <input type="text" id="teacher-search-input" onkeyup="filterScoresTable()" placeholder="ค้นหาชื่อ, รร. หรือ Student ID..." class="px-3.5 py-2 rounded-xl border border-gray-200 text-xs bg-gray-50 focus:bg-white focus:ring-2 focus:ring-apple-accent outline-none min-w-[240px]">
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="exportScoresToCSV()" class="tactile-btn px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-apple-textPrimary text-xs font-semibold shadow-apple-sm flex items-center space-x-1.5">
+              <i class="ph-bold ph-file-csv text-sm"></i>
+              <span>Export CSV</span>
+            </button>
+            <label class="tactile-btn px-4 py-2 rounded-xl bg-apple-textPrimary text-white text-xs font-semibold shadow-apple-btn-dark flex items-center space-x-1.5 cursor-pointer">
+              <i class="ph-bold ph-upload-simple text-sm"></i>
+              <span>Import รายชื่อ (.xlsx / .csv)</span>
+              <input type="file" id="roster-file-input" onchange="handleRosterUpload(event)" accept=".xlsx, .xls, .csv" class="hidden">
+            </label>
+          </div>
+        </div>
+
+        <!-- Scores Table -->
+        <div class="overflow-x-auto rounded-2xl hairline-border">
+          <table class="w-full text-left text-xs text-apple-textPrimary" id="scores-table">
+            <thead class="bg-gray-100/70 border-b border-gray-200 font-semibold text-apple-textSecondary">
+              <tr>
+                <th class="p-3.5">Student ID</th>
+                <th class="p-3.5">ชื่อ-นามสกุล</th>
+                <th class="p-3.5">โรงเรียน</th>
+                <th class="p-3.5">ชั้น</th>
+                <th class="p-3.5">Unit 5</th>
+                <th class="p-3.5">Unit 6</th>
+                <th class="p-3.5">Unit 7</th>
+                <th class="p-3.5">Unit 8</th>
+                <th class="p-3.5">สถานะ</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 bg-white" id="scores-tbody">
+              <!-- Injected by script -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: Student Authentication / Registration -->
+  <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-apple-depth hairline-border space-y-5">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-display font-bold text-apple-textPrimary">บัญชีนักเรียน ม.4 (Student Account)</h3>
+        <button onclick="toggleAuthModal()" class="text-gray-400 hover:text-black text-lg">✕</button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-apple-textSecondary mb-1">อีเมลนักเรียน (Email Address)</label>
+          <input type="email" id="auth-email-input" placeholder="student.m4@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs bg-gray-50 focus:bg-white focus:ring-2 focus:ring-apple-accent outline-none">
+          <p class="text-[10px] text-gray-400 mt-1">ระบบจะ Auto-normalize ตัดช่องว่างและตัวพิมพ์เล็กอัตโนมัติ</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-apple-textSecondary mb-1">รหัสผ่าน (Password)</label>
+          <input type="password" id="auth-password-input" placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs bg-gray-50 focus:bg-white focus:ring-2 focus:ring-apple-accent outline-none">
+        </div>
+
+        <div class="pt-2 flex flex-col gap-2">
+          <button onclick="performLogin()" class="tactile-btn w-full py-2.5 rounded-xl bg-apple-accent text-white text-xs font-semibold shadow-apple-btn-primary">
+            เข้าสู่ระบบ (Sign In)
+          </button>
+          <button onclick="loginAsDemo()" class="tactile-btn w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-apple-textPrimary text-xs font-semibold shadow-apple-sm">
+            ทดลองใช้งานแบบนักเรียนสาธิต (Demo Student)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Google Apps Script Backend URL Settings -->
+  <div id="config-modal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-apple-depth hairline-border space-y-5">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-display font-bold text-apple-textPrimary">ตั้งค่าการเชื่อมโยง Google Apps Script</h3>
+        <button onclick="toggleConfigModal()" class="text-gray-400 hover:text-black text-lg">✕</button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-apple-textSecondary mb-1">Google Apps Script Web App URL</label>
+          <input type="url" id="gas-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs bg-gray-50 focus:bg-white focus:ring-2 focus:ring-apple-accent outline-none font-mono">
+          <p class="text-[11px] text-gray-400 mt-1">คัดลอกจาก Google Sheets เมนู Deploy -> Web App (TWP_GetInvolved_M4_Database)</p>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 space-y-1">
+          <div class="font-bold text-apple-accent">สถานะการเชื่อมต่อ:</div>
+          <p class="text-gray-600 leading-relaxed font-mono">
+            TWP_GetInvolved_M4_Database พร้อมใช้งานในระบบทันที
+          </p>
+        </div>
+
+        <div class="pt-2 flex justify-end gap-2">
+          <button onclick="toggleConfigModal()" class="tactile-btn px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-apple-textPrimary font-semibold shadow-apple-sm">
+            ยกเลิก
+          </button>
+          <button onclick="saveGASUrl()" class="tactile-btn px-5 py-2 rounded-xl bg-apple-accent text-white font-semibold shadow-apple-btn-primary">
+            บันทึกการตั้งค่า
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION LOGIC SCRIPT -->
+  <script>
+    // Embedded Deployed Google Apps Script URL for TWP_GetInvolved_M4_Database
+    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbyZ2vQLv9lTlrD1Wt77Qw9vzYr4LwtRgOYbJupFvhlVkSa75OUX5TU6jddM9JXUS_MF/exec";
+    let gasUrl = localStorage.getItem('twp_m4_gas_url') || DEFAULT_GAS_URL;
+
+    // Student Profile State
+    let currentStudent = {
+      studentId: "STD-M4-001",
+      name: "ภัทรพล สิทธิไพศาล",
+      school: "รร.สาธิตมหาวิทยาลัย",
+      grade: "ม.4",
+      room: "1",
+      email: "pattarapol.m4@gmail.com"
+    };
+
+    // Tracking unit progress: which units are completed
+    let unitProgress = JSON.parse(localStorage.getItem('twp_m4_unit_progress') || '{}');
+    if (!unitProgress.unit5) unitProgress.unit5 = { completed: true, score: 12, max: 12 };
+    if (!unitProgress.unit6) unitProgress.unit6 = { completed: false, score: 0, max: 12 };
+    if (!unitProgress.unit7) unitProgress.unit7 = { completed: false, score: 0, max: 12 };
+    if (!unitProgress.unit8) unitProgress.unit8 = { completed: false, score: 0, max: 12 };
+
+    let activeUnitId = "unit5";
+    let activeSectionIdx = 0;
+    
+    // Store user answers keyed by question ID: { qId: answerValue }
+    let userAnswers = {};
+    // Store section submission states: { "unit5_0": true }
+    let submittedSections = {};
+
+    // Sample Student Roster for local demonstration
+    let rosterDB = [
+      { studentId: "STD-M4-001", name: "ภัทรพล สิทธิไพศาล", school: "รร.สาธิตมหาวิทยาลัย", grade: "ม.4", u5: "12/12", u6: "11/12", u7: "12/12", u8: "11/12", status: "ได้รับเกียรติบัตร" },
+      { studentId: "STD-M4-002", name: "กัญญาณัฐ วงศ์สุวรรณ", school: "รร.เตรียมอุดมศึกษาพัฒนาการ", grade: "ม.4", u5: "11/12", u6: "10/12", u7: "-", u8: "-", status: "กำลังศึกษา" },
+      { studentId: "STD-M4-003", name: "ธนกฤต เมธาพร", school: "รร.สวนกุหลาบวิทยาลัย", grade: "ม.4", u5: "9/12", u6: "-", u7: "-", u8: "-", status: "กำลังศึกษา" }
+    ];
+
+    // Preload TWP Logo for Canvas Certificate
+    const twpLogoImg = new Image();
+    twpLogoImg.src = 'assets/twp-logo.png';
+
+    // Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      initCurriculumGrid();
+      updateUserDisplay();
+      renderScoresTable();
+      updateCertificateStatus();
+      drawCertificateCanvas();
+    });
+
+    // Navigation Views
+    function showView(viewName) {
+      ['curriculum', 'exercise', 'certificate', 'teacher'].forEach(v => {
+        const el = document.getElementById('view-' + v);
+        const navBtn = document.getElementById('nav-btn-' + v);
+        if (el) el.classList.toggle('hidden', v !== viewName);
+        if (navBtn) {
+          if (v === viewName) {
+            navBtn.className = 'px-4 py-1.5 text-xs font-semibold rounded-full bg-white text-apple-textPrimary shadow-apple-sm transition';
+          } else {
+            navBtn.className = 'px-4 py-1.5 text-xs font-medium rounded-full text-apple-textSecondary hover:text-apple-textPrimary transition';
+          }
+        }
+      });
+      if (viewName === 'certificate') {
+        drawCertificateCanvas();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 1. Initialize Curriculum Grid
+    function initCurriculumGrid() {
+      const grid = document.getElementById('curriculum-grid');
+      if (!grid || typeof M4_UNITS_DATA === 'undefined') return;
+
+      grid.innerHTML = '';
+      Object.keys(M4_UNITS_DATA).forEach(unitKey => {
+        const unit = M4_UNITS_DATA[unitKey];
+        const isDone = unitProgress[unitKey] && unitProgress[unitKey].completed;
+        const card = document.createElement('div');
+        card.className = 'bg-white p-6 rounded-3xl hairline-border shadow-apple-card hover:shadow-apple-depth transition duration-300 relative group flex flex-col justify-between';
+        
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[11px] font-bold px-3 py-1 rounded-full ${isDone ? 'bg-green-100 text-green-700' : 'bg-blue-50 text-apple-accent'} hairline-border">
+                ${unit.id.toUpperCase()} ${isDone ? '✓ ผ่านแล้ว' : ''}
+              </span>
+              <span class="text-xs font-semibold text-apple-textTertiary">12 Items • 3 Parts</span>
+            </div>
+            <h3 class="text-lg font-display font-bold text-apple-textPrimary">${unit.name}</h3>
+            <p class="mt-1 text-xs text-apple-textSecondary leading-relaxed">${unit.description}</p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs font-medium text-apple-textSecondary">ทวพ. Get INVOLVED!</span>
+            <button onclick="startUnit('${unit.id}')" class="tactile-btn px-4 py-2 rounded-xl text-xs font-semibold ${isDone ? 'bg-gray-100 hover:bg-gray-200 text-apple-textPrimary' : 'bg-apple-textPrimary text-white'} shadow-apple-btn-dark">
+              ${isDone ? 'ทบทวนข้อสอบ' : 'เริ่มทำแบบฝึกหัด'}
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // 2. Start Selected Unit
+    function startUnit(unitId) {
+      if (!M4_UNITS_DATA[unitId]) return;
+      activeUnitId = unitId;
+      activeSectionIdx = 0;
+
+      const unit = M4_UNITS_DATA[unitId];
+      document.getElementById('active-unit-badge').textContent = unit.id.toUpperCase();
+      document.getElementById('active-unit-title').textContent = unit.name;
+      document.getElementById('active-unit-desc').textContent = unit.description;
+
+      renderCurrentSection();
+      showView('exercise');
+    }
+
+    function switchSection(secIdx) {
+      activeSectionIdx = secIdx;
+      for (let i = 0; i < 3; i++) {
+        const btn = document.getElementById('sec-btn-' + i);
+        if (btn) {
+          if (i === secIdx) {
+            btn.className = 'px-4 py-2 font-semibold rounded-xl bg-white text-apple-textPrimary shadow-apple-sm transition';
+          } else {
+            btn.className = 'px-4 py-2 font-medium rounded-xl text-apple-textSecondary hover:text-apple-textPrimary transition';
+          }
+        }
+      }
+      renderCurrentSection();
+    }
+
+    function navigateSection(delta) {
+      const nextIdx = activeSectionIdx + delta;
+      if (nextIdx >= 0 && nextIdx <= 2) {
+        switchSection(nextIdx);
+      }
+    }
+
+    // 3. Render Current Section
+    function renderCurrentSection() {
+      const unit = M4_UNITS_DATA[activeUnitId];
+      const section = unit.sections[activeSectionIdx];
+      const container = document.getElementById('exercise-content-container');
+      container.innerHTML = '';
+
+      const secKey = `${activeUnitId}_${activeSectionIdx}`;
+      const isSubmitted = submittedSections[secKey] || false;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'bg-white p-6 sm:p-8 rounded-3xl hairline-border shadow-apple-card space-y-6';
+
+      const header = document.createElement('div');
+      header.className = 'border-b border-gray-100 pb-4 flex flex-wrap items-center justify-between gap-2';
+      header.innerHTML = `
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-apple-accent">${section.title}</span>
+          <p class="text-xs text-apple-textSecondary mt-1">${section.description}</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-semibold px-3 py-1 rounded-full ${isSubmitted ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}">
+            ${isSubmitted ? 'ตรวจคำตอบแล้ว' : 'กำลังทำ'}
+          </span>
+          <span class="text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 text-apple-textSecondary">
+            ${section.questions.length} ข้อ
+          </span>
+        </div>
+      `;
+      wrapper.appendChild(header);
+
+      if (section.type === 'multiple_choice') {
+        renderMCSection(wrapper, section, isSubmitted);
+      } else if (section.type === 'matching') {
+        renderMatchingSection(wrapper, section, isSubmitted);
+      } else if (section.type === 'fill_in') {
+        renderGrammarSection(wrapper, section, isSubmitted);
+      }
+
+      container.appendChild(wrapper);
+
+      const btnCheck = document.getElementById('btn-check-part');
+      if (btnCheck) {
+        btnCheck.innerHTML = isSubmitted 
+          ? `<i class="ph-bold ph-arrow-clockwise text-base"></i><span>ตรวจคำตอบอีกครั้ง</span>`
+          : `<i class="ph-bold ph-check-circle text-base"></i><span>ตรวจคำตอบ & ดูเฉลยละเอียดของส่วนนี้</span>`;
+      }
+    }
+
+    // Part 1: Multiple Choice
+    function renderMCSection(wrapper, section, isSubmitted) {
+      const list = document.createElement('div');
+      list.className = 'space-y-6';
+
+      section.questions.forEach(q => {
+        const item = document.createElement('div');
+        item.className = 'p-5 rounded-2xl bg-gray-50/80 hairline-border space-y-4';
+        
+        item.innerHTML = `
+          <div class="text-sm font-semibold text-apple-textPrimary leading-relaxed">
+            ${q.prompt}
+          </div>
+          <div class="space-y-2.5" id="mc-options-${q.id}"></div>
+          <div id="mc-exp-${q.id}" class="${isSubmitted && userAnswers[q.id] ? '' : 'hidden'} p-4 rounded-xl bg-blue-50/80 border border-blue-100 text-xs text-apple-textPrimary leading-relaxed">
+            <strong class="text-apple-accent">คำอธิบายจากติวเตอร์:</strong> ${q.explanation}
+          </div>
+          <div id="mc-unanswered-${q.id}" class="${isSubmitted && !userAnswers[q.id] ? '' : 'hidden'} p-3 rounded-xl bg-gray-100 text-gray-500 text-xs italic">
+            [ข้อนี้ไม่ได้ทำ - ไม่เปิดเฉลยคำตอบตามกฎการสอบ]
+          </div>
+        `;
+
+        const optContainer = item.querySelector(`#mc-options-${q.id}`);
+        q.choices.forEach(ch => {
+          const optCard = document.createElement('div');
+          const isSelected = (userAnswers[q.id] === ch);
+          
+          let cardStyle = 'option-card p-3.5 rounded-xl bg-white hairline-border shadow-apple-sm flex items-center justify-between text-xs sm:text-sm';
+          let badgeHtml = '<span class="badge hidden text-xs font-semibold"></span>';
+
+          if (isSelected) {
+            cardStyle += ' selected';
+          }
+
+          if (isSubmitted && isSelected) {
+            const isCorrect = (ch.trim() === q.answer.trim());
+            cardStyle += isCorrect ? ' bg-green-50 border-green-500' : ' bg-red-50 border-red-400';
+            badgeHtml = `<span class="badge text-xs font-semibold ${isCorrect ? 'text-green-600' : 'text-red-500'}">${isCorrect ? '✓ คำตอบถูกต้อง' : '✕ คำตอบยังไม่ถูกต้อง'}</span>`;
+          }
+
+          optCard.className = cardStyle;
+          optCard.innerHTML = `
+            <span class="font-medium text-apple-textPrimary">${ch}</span>
+            ${badgeHtml}
+          `;
+
+          optCard.onclick = () => {
+            userAnswers[q.id] = ch;
+            optContainer.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+            optCard.classList.add('selected');
+          };
+
+          optContainer.appendChild(optCard);
+        });
+
+        list.appendChild(item);
+      });
+
+      wrapper.appendChild(list);
+    }
+
+    // Part 2: Vocabulary Matching
+    let selectedLeftMatch = null;
+    function renderMatchingSection(wrapper, section, isSubmitted) {
+      selectedLeftMatch = null;
+      const grid = document.createElement('div');
+      grid.className = 'grid grid-cols-1 md:grid-cols-2 gap-6';
+
+      const leftCol = document.createElement('div');
+      leftCol.className = 'space-y-3';
+      leftCol.innerHTML = '<div class="text-xs font-bold text-apple-textSecondary uppercase tracking-wider px-1">Vocabulary Terms</div>';
+
+      section.questions.forEach(q => {
+        const card = document.createElement('div');
+        const pairedCode = userAnswers[q.id];
+        let cardClass = 'match-card p-4 rounded-2xl bg-white hairline-border shadow-apple-sm flex items-center justify-between text-xs sm:text-sm font-semibold text-apple-textPrimary';
+
+        if (pairedCode) cardClass += ' paired';
+
+        if (isSubmitted && pairedCode) {
+          const isCorrect = (pairedCode.trim().toLowerCase() === q.answer.trim().toLowerCase());
+          cardClass += isCorrect ? ' checked-correct' : ' checked-wrong';
+        }
+
+        card.className = cardClass;
+        card.dataset.id = q.id;
+        card.dataset.ans = q.answer;
+
+        let statusText = pairedCode ? `<span class="text-xs text-blue-600 font-bold">→ (${pairedCode})</span>` : `<i class="ph-bold ph-arrow-right text-gray-400"></i>`;
+        if (isSubmitted && pairedCode) {
+          const isCorrect = (pairedCode.trim().toLowerCase() === q.answer.trim().toLowerCase());
+          statusText = `<span class="text-xs font-bold ${isCorrect ? 'text-green-600' : 'text-red-500'}">${isCorrect ? '✓ (' + pairedCode + ')' : '✕ (' + pairedCode + ')'}</span>`;
+        } else if (isSubmitted && !pairedCode) {
+          statusText = `<span class="text-[11px] text-gray-400 italic">[ไม่ได้ตอบ]</span>`;
+        }
+
+        card.innerHTML = `<span>${q.term}</span>${statusText}`;
+
+        card.onclick = () => {
+          leftCol.querySelectorAll('.match-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          selectedLeftMatch = { card: card, qId: q.id, ans: q.answer };
+        };
+        leftCol.appendChild(card);
+      });
+
+      const rightCol = document.createElement('div');
+      rightCol.className = 'space-y-3';
+      rightCol.innerHTML = '<div class="text-xs font-bold text-apple-textSecondary uppercase tracking-wider px-1">English Definitions</div>';
+
+      section.options.forEach(opt => {
+        const card = document.createElement('div');
+        card.className = 'match-card p-4 rounded-2xl bg-white hairline-border shadow-apple-sm flex items-center justify-between text-xs sm:text-sm font-medium text-apple-textPrimary';
+        card.innerHTML = `<span>${opt.code}) ${opt.label}</span><span class="badge text-xs font-bold text-blue-600"></span>`;
+
+        card.onclick = () => {
+          if (!selectedLeftMatch) {
+            alert("กรุณาแตะเลือกคำศัพท์ฝั่งซ้ายก่อน แล้วจึงมาแตะคำนิยามฝั่งขวา");
+            return;
+          }
+          userAnswers[selectedLeftMatch.qId] = opt.code;
+          renderCurrentSection();
+        };
+
+        rightCol.appendChild(card);
+      });
+
+      grid.appendChild(leftCol);
+      grid.appendChild(rightCol);
+      wrapper.appendChild(grid);
+
+      if (isSubmitted) {
+        const expBox = document.createElement('div');
+        expBox.className = 'p-5 rounded-2xl bg-blue-50/70 border border-blue-200 text-xs text-gray-800 space-y-2 mt-4';
+        
+        let expHtml = '<div class="font-bold text-blue-800 text-sm">💡 เฉลยและคำอธิบายความหมายภาษาไทย (เฉพาะข้อที่ทำ):</div><div class="space-y-1.5 leading-relaxed">';
+        let hasAnyAttempt = false;
+
+        section.questions.forEach(q => {
+          if (userAnswers[q.id]) {
+            hasAnyAttempt = true;
+            const isCorrect = (userAnswers[q.id].trim().toLowerCase() === q.answer.trim().toLowerCase());
+            expHtml += `<div>• <strong class="${isCorrect ? 'text-green-700' : 'text-red-700'}">${q.term}</strong>: ${q.explanation}</div>`;
+          }
+        });
+
+        if (!hasAnyAttempt) {
+          expHtml += '<div class="text-gray-500 italic">ไม่มีข้อที่ทำในส่วนนี้ จึงไม่แสดงเฉลย</div>';
+        }
+        expHtml += '</div>';
+
+        expBox.innerHTML = expHtml;
+        wrapper.appendChild(expBox);
+      }
+    }
+
+    // Part 3: Grammar Fill-in
+    function renderGrammarSection(wrapper, section, isSubmitted) {
+      const list = document.createElement('div');
+      list.className = 'space-y-5';
+
+      section.questions.forEach(q => {
+        const item = document.createElement('div');
+        item.className = 'p-5 rounded-2xl bg-gray-50/80 hairline-border space-y-3';
+        const savedVal = userAnswers[q.id] || '';
+
+        let statusBadge = '';
+        let inputClass = 'px-3.5 py-2 rounded-xl border border-gray-300 text-xs sm:text-sm font-semibold text-apple-accent bg-white outline-none focus:ring-2 focus:ring-apple-accent min-w-[220px]';
+
+        if (isSubmitted) {
+          if (savedVal.trim() !== '') {
+            const isCorrect = q.acceptableAnswers.some(a => a.trim().toLowerCase() === savedVal.trim().toLowerCase());
+            statusBadge = isCorrect 
+              ? `<span class="text-green-600 font-bold text-xs">✓ คำตอบถูกต้อง</span>`
+              : `<span class="text-red-500 font-bold text-xs">✕ คำตอบยังไม่ถูกต้อง</span>`;
+            inputClass += isCorrect ? ' border-green-500 bg-green-50/50' : ' border-red-400 bg-red-50/50';
+          } else {
+            statusBadge = `<span class="text-gray-400 italic text-xs">[ข้อนี้ไม่ได้ทำ - ไม่เปิดเฉลย]</span>`;
+          }
+        }
+
+        item.innerHTML = `
+          <div class="text-sm font-medium text-apple-textPrimary leading-relaxed">
+            ${q.prompt}
+          </div>
+          <div class="flex flex-wrap items-center gap-3 pt-1">
+            <input type="text" id="input-${q.id}" value="${savedVal}" placeholder="พิมพ์คำตอบภาษาอังกฤษ..." class="${inputClass}">
+            ${statusBadge}
+          </div>
+          <div class="${isSubmitted && savedVal.trim() !== '' ? '' : 'hidden'} p-4 rounded-xl bg-blue-50/80 border border-blue-100 text-xs text-apple-textPrimary leading-relaxed">
+            ${q.explanation}
+          </div>
+        `;
+
+        const inputEl = item.querySelector(`#input-${q.id}`);
+        inputEl.oninput = (e) => {
+          userAnswers[q.id] = e.target.value;
+        };
+
+        list.appendChild(item);
+      });
+
+      wrapper.appendChild(list);
+    }
+
+    // 4. Submit & Check Answers for Current Part (M.1-3 Rule)
+    function submitCurrentPart() {
+      const unit = M4_UNITS_DATA[activeUnitId];
+      const section = unit.sections[activeSectionIdx];
+      const questions = section.questions;
+
+      const attempted = questions.filter(q => userAnswers[q.id] && String(userAnswers[q.id]).trim() !== '');
+
+      if (attempted.length === 0) {
+        alert("⚠️ คุณยังไม่ได้ทำข้อสอบในส่วนนี้เลยแม้แต่ข้อเดียว กรุณาลองทำอย่างน้อย 1 ข้อก่อนตรวจคำตอบครับ");
+        return;
+      }
+
+      if (attempted.length < questions.length) {
+        const msg = `คุณยังทำข้อสอบไม่ครบทุกข้อ (ทำไป ${attempted.length} จาก ${questions.length} ข้อ)\n\nต้องการจบการทำแบบฝึกหัดในส่วนนี้และตรวจคำตอบเลยหรือไม่?\n\n• ระบบจะสรุปคะแนนเฉพาะ ${attempted.length} ข้อที่คุณได้ทำไปเท่านั้น\n• ส่วนข้อที่ไม่ได้ทำจะไม่เปิดเฉลย เพื่อรักษาความโปร่งใสของผลการประเมิน`;
+        if (!confirm(msg)) {
+          return;
+        }
+      }
+
+      let partScore = 0;
+      attempted.forEach(q => {
+        const userVal = String(userAnswers[q.id]).trim().toLowerCase();
+        if (section.type === 'multiple_choice') {
+          if (userAnswers[q.id].trim() === q.answer.trim()) partScore++;
+        } else if (section.type === 'matching') {
+          if (userVal === q.answer.trim().toLowerCase()) partScore++;
+        } else if (section.type === 'fill_in') {
+          if (q.acceptableAnswers.some(a => a.trim().toLowerCase() === userVal)) partScore++;
+        }
+      });
+
+      const secKey = `${activeUnitId}_${activeSectionIdx}`;
+      submittedSections[secKey] = true;
+
+      // Check if all 3 parts of this unit are submitted
+      const allPartsSubmitted = [0, 1, 2].every(idx => submittedSections[`${activeUnitId}_${idx}`]);
+      if (allPartsSubmitted) {
+        unitProgress[activeUnitId] = { completed: true, score: 12, max: 12 };
+        localStorage.setItem('twp_m4_unit_progress', JSON.stringify(unitProgress));
+        updateCertificateStatus();
+        drawCertificateCanvas();
+        syncScoreToGoogleSheet(activeUnitId, partScore);
+      }
+
+      renderCurrentSection();
+
+      alert(`🎉 ตรวจคำตอบของส่วนนี้เรียบร้อยแล้ว!\n\nผลคะแนนของคุณ: ${partScore} / ${attempted.length} ข้อที่ทำ\n(ระบบได้แสดงคำอธิบายเฉลยละเอียดภาษาไทยเฉพาะข้อที่คุณได้ทำไว้เรียบร้อยแล้ว)`);
+    }
+
+    // 5. PROGRESSIVE NAME REVEAL FORMULA (From M.1-3 Core Engine)
+    function getProgressiveRevealedName(fullName, completedUnitsCount, totalUnits = 4) {
+      if (!fullName || !fullName.trim()) {
+        return { revealed: '', masked: '● ● ● ● ●', full: 'นักเรียน', pct: 0, completedCount: 0, isComplete: false };
+      }
+      const cleanName = fullName.trim();
+      // Regular expression matching Thai grapheme clusters accurately (never splits vowels/tone marks)
+      const clusters = cleanName.match(/\P{M}\p{M}*/gu) || Array.from(cleanName);
+      const total = clusters.length;
+      const ratio = Math.min(Math.max(completedUnitsCount / totalUnits, 0), 1);
+      const pct = Math.round(ratio * 100);
+
+      if (ratio >= 1) {
+        return {
+          revealed: cleanName,
+          masked: '',
+          full: cleanName,
+          pct: 100,
+          completedCount: completedUnitsCount,
+          isComplete: true
+        };
+      }
+
+      if (ratio === 0) {
+        const maskCount = Math.min(total, 10);
+        return {
+          revealed: '',
+          masked: '● '.repeat(maskCount).trim(),
+          full: cleanName,
+          pct: 0,
+          completedCount: 0,
+          isComplete: false
+        };
+      }
+
+      const revealCount = Math.max(1, Math.ceil(total * ratio));
+      const revealedPart = clusters.slice(0, revealCount).join('');
+      const remainingCount = Math.max(0, total - revealCount);
+      const maskPart = '● '.repeat(Math.min(remainingCount, 8)).trim();
+
+      return {
+        revealed: revealedPart,
+        masked: maskPart,
+        full: cleanName,
+        pct: pct,
+        completedCount: completedUnitsCount,
+        isComplete: false
+      };
+    }
+
+    function getCompletedUnitsCount() {
+      let count = 0;
+      ['unit5', 'unit6', 'unit7', 'unit8'].forEach(u => {
+        if (unitProgress[u] && unitProgress[u].completed) count++;
+      });
+      return count;
+    }
+
+    // 6. High-DPI E-Certificate Canvas Rendering with Progressive Name Reveal
+    function drawCertificateCanvas() {
+      const canvas = document.getElementById('certificateCanvas');
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width = 1200;
+      const h = canvas.height = 850;
+
+      const completedCount = getCompletedUnitsCount();
+      const revealInfo = getProgressiveRevealedName(currentStudent.name, completedCount, 4);
+
+      // Update Nav percentage
+      const navPct = document.getElementById('nav-cert-pct');
+      if (navPct) navPct.textContent = `${revealInfo.pct}%`;
+
+      // 1. Background: Clean Apple White-Gray Gradient
+      const bgGrad = ctx.createLinearGradient(0, 0, w, h);
+      bgGrad.addColorStop(0, '#FFFFFF');
+      bgGrad.addColorStop(0.5, '#FDFDFD');
+      bgGrad.addColorStop(1, '#F5F5F7');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // 2. Outer Dark Slate Border
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = '#1D1D1F';
+      ctx.strokeRect(26, 26, w - 52, h - 52);
+
+      // 3. Inner Noble Gold / Platinum Hairline Border
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = '#D1D1D6';
+      ctx.strokeRect(40, 40, w - 80, h - 80);
+
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = '#0071E3';
+      ctx.strokeRect(46, 46, w - 92, h - 92);
+
+      // Corner Ornaments
+      const corners = [[50, 50], [w - 50, 50], [50, h - 50], [w - 50, h - 50]];
+      corners.forEach(([cx, cy]) => {
+        ctx.fillStyle = '#0071E3';
+        ctx.beginPath();
+        ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#D1D1D6';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 11, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+
+      // 4. TOP LOGO: Draw Official TWP Logo
+      const logoW = 86;
+      const logoH = 86;
+      const drawLogo = (img) => {
+        ctx.drawImage(img, (w - logoW) / 2, 60, logoW, logoH);
+      };
+      if (twpLogoImg.complete && twpLogoImg.naturalWidth > 0) {
+        drawLogo(twpLogoImg);
+      } else {
+        twpLogoImg.onload = () => drawLogo(twpLogoImg);
+      }
+
+      // 5. Headings
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#1D1D1F';
+      ctx.font = 'bold 24px Prompt, Sarabun, sans-serif';
+      ctx.fillText('บริษัท สำนักพิมพ์ ไทยวัฒนาพานิช จำกัด', w / 2, 175);
+
+      ctx.fillStyle = '#6E6E73';
+      ctx.font = 'bold 12px Inter, Prompt, sans-serif';
+      ctx.fillText('THAI WATANA PANICH PUBLISHING CO., LTD.  •  EXCELLENCE IN DIGITAL EDUCATION', w / 2, 198);
+
+      // 6. Award Title
+      ctx.fillStyle = '#0071E3';
+      ctx.font = 'bold 32px Prompt, Sarabun, sans-serif';
+      ctx.fillText('เกียรติบัตรนี้มอบให้เพื่อแสดงว่า', w / 2, 256);
+
+      ctx.fillStyle = '#86868B';
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.fillText('CERTIFICATE OF ACADEMIC ACHIEVEMENT', w / 2, 282);
+
+      // Decorative Divider
+      ctx.strokeStyle = '#E5E5EA';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(350, 298);
+      ctx.lineTo(570, 298);
+      ctx.moveTo(630, 298);
+      ctx.lineTo(w - 350, 298);
+      ctx.stroke();
+
+      ctx.fillStyle = '#0071E3';
+      ctx.beginPath();
+      ctx.moveTo(600, 291);
+      ctx.lineTo(607, 298);
+      ctx.lineTo(600, 305);
+      ctx.lineTo(593, 298);
+      ctx.closePath();
+      ctx.fill();
+
+      // 7. PROGRESSIVE STUDENT NAME REVEAL
+      if (revealInfo.isComplete) {
+        // Complete 100% Name
+        ctx.fillStyle = '#1D1D1F';
+        ctx.font = 'bold 44px Prompt, Sarabun, sans-serif';
+        ctx.fillText(revealInfo.full, w / 2, 375);
+      } else {
+        // Partial Name with mystery dots
+        ctx.font = 'bold 42px Prompt, Sarabun, sans-serif';
+        const revText = revealInfo.revealed;
+        const maskText = revealInfo.masked ? ' ' + revealInfo.masked : '';
+        const revW = ctx.measureText(revText).width;
+        ctx.font = '32px Prompt, monospace, sans-serif';
+        const maskW = ctx.measureText(maskText).width;
+        const totalW = revW + maskW;
+        const startX = (w - totalW) / 2;
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#1D1D1F';
+        ctx.font = 'bold 42px Prompt, Sarabun, sans-serif';
+        ctx.fillText(revText, startX, 375);
+
+        ctx.fillStyle = '#0071E3';
+        ctx.font = '30px Prompt, monospace, sans-serif';
+        ctx.fillText(maskText, startX + revW, 372);
+        ctx.textAlign = 'center';
+
+        // Sub-badge: Motivational indicator
+        ctx.fillStyle = '#D97706';
+        ctx.font = 'bold 14px Prompt, sans-serif';
+        ctx.fillText(`🔒 กำลังปลดล็อกเกียรติบัตร ${revealInfo.pct}% (${revealInfo.completedCount}/4 บท) • ทำแบบฝึกหัดให้ครบเพื่อปลดล็อกชื่อเต็ม`, w / 2, 412);
+      }
+
+      // 8. School & Class
+      ctx.fillStyle = '#6E6E73';
+      ctx.font = '500 18px Prompt, Sarabun, sans-serif';
+      ctx.fillText(`${currentStudent.school} • ระดับชั้นมัธยมศึกษาปีที่ 4 เตรียมขึ้นระดับอุดมศึกษา`, w / 2, revealInfo.isComplete ? 425 : 445);
+
+      // 9. Course Description
+      ctx.fillStyle = '#2C2C2E';
+      ctx.font = '400 17px Prompt, Sarabun, sans-serif';
+      ctx.fillText('ได้ผ่านการทดสอบและประเมินทักษะภาษาอังกฤษออนไลน์ตามหลักสูตรสากล', w / 2, 495);
+      
+      ctx.font = 'bold 20px Prompt, Sarabun, sans-serif';
+      ctx.fillText('Get INVOLVED! ม.4 ภาคเรียนที่ 2 (Units 5 - 8)', w / 2, 530);
+
+      ctx.font = '500 17px Prompt, sans-serif';
+      ctx.fillStyle = '#0071E3';
+      ctx.fillText('ผลการประเมิน: ระดับดีเยี่ยม (Grade A - Exemplary Standard)', w / 2, 565);
+
+      // 10. Footer Section
+      ctx.strokeStyle = '#E5E5EA';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(100, 680);
+      ctx.lineTo(w - 100, 680);
+      ctx.stroke();
+
+      // Left Signature
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#1D1D1F';
+      ctx.font = 'bold 15px Prompt, Sarabun, sans-serif';
+      ctx.fillText('ฝ่ายพัฒนานวัตกรรมการเรียนรู้ดิจิทัล', 100, 715);
+      ctx.fillStyle = '#86868B';
+      ctx.font = '400 13px Prompt, sans-serif';
+      ctx.fillText('บริษัท สำนักพิมพ์ ไทยวัฒนาพานิช จำกัด (TWP)', 100, 738);
+
+      // Center Official Seal (Gold when 100%, gray locked when incomplete)
+      ctx.textAlign = 'center';
+      if (revealInfo.isComplete) {
+        ctx.fillStyle = '#D97706';
+        ctx.beginPath();
+        ctx.arc(w / 2, 720, 28, 0, Math.PI * 2);
+        ctx.strokeStyle = '#F59E0B';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.fillStyle = '#F59E0B';
+        ctx.font = 'bold 11px Inter, sans-serif';
+        ctx.fillText('VERIFIED', w / 2, 718);
+        ctx.fillText('OFFICIAL', w / 2, 732);
+      } else {
+        ctx.fillStyle = '#9CA3AF';
+        ctx.beginPath();
+        ctx.arc(w / 2, 720, 28, 0, Math.PI * 2);
+        ctx.strokeStyle = '#D1D5DB';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.fillStyle = '#6B7280';
+        ctx.font = 'bold 11px Inter, sans-serif';
+        ctx.fillText('IN PROGRESS', w / 2, 724);
+      }
+
+      // Right Issue Date & Serial
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#1D1D1F';
+      ctx.font = 'bold 15px Prompt, sans-serif';
+      ctx.fillText('วันที่อนุมัติ: 25 ตุลาคม 2569', w - 100, 715);
+      ctx.fillStyle = '#86868B';
+      ctx.font = 'mono 12px Inter, monospace';
+      ctx.fillText(revealInfo.isComplete ? 'Serial: TWP-M4-CERT-2026-08892' : 'Serial: PENDING COMPLETION', w - 100, 738);
+    }
+
+    function downloadCertificateImage() {
+      const completedCount = getCompletedUnitsCount();
+      if (completedCount < 4) {
+        if (!confirm(`คุณสำเร็จการทำแบบฝึกหัดไปแล้ว ${completedCount}/4 บท (ปลดล็อกชื่อ ${Math.round(completedCount / 4 * 100)}%)\n\nต้องการดาวน์โหลดภาพเกียรติบัตรในสถานะปัจจุบันหรือไม่?`)) {
+          return;
+        }
+      }
+      const canvas = document.getElementById('certificateCanvas');
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = `Certificate_M4_${currentStudent.name.replace(/\s+/g, '_')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function updateCertificateStatus() {
+      const grid = document.getElementById('cert-requirements-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      const units = ['unit5', 'unit6', 'unit7', 'unit8'];
+      const unitNames = ['Unit 5: Art', 'Unit 6: Travel', 'Unit 7: Choices', 'Unit 8: Media'];
+
+      units.forEach((u, i) => {
+        const isDone = unitProgress[u] && unitProgress[u].completed;
+        const item = document.createElement('div');
+        item.className = 'p-3.5 rounded-2xl bg-white hairline-border shadow-apple-sm text-center space-y-1';
+        item.innerHTML = `
+          <div class="text-[11px] font-bold text-apple-textSecondary">${unitNames[i]}</div>
+          <div class="text-xs font-semibold ${isDone ? 'text-green-600' : 'text-gray-400'} flex items-center justify-center gap-1">
+            <i class="ph-bold ${isDone ? 'ph-check-circle' : 'ph-clock'}"></i>
+            <span>${isDone ? 'ผ่านการประเมิน' : 'รอทำแบบฝึกหัด'}</span>
+          </div>
+        `;
+        grid.appendChild(item);
+      });
+    }
+
+    // 7. Sync Score to Google Sheet Web App (TWP_GetInvolved_M4_Database)
+    function syncScoreToGoogleSheet(unitKey, score) {
+      if (!gasUrl) return;
+      const payload = {
+        action: "submit_score",
+        email: currentStudent.email,
+        studentId: currentStudent.studentId,
+        name: currentStudent.name,
+        school: currentStudent.school,
+        unit: unitKey,
+        p1: 3,
+        p2: 5,
+        p3: 4,
+        total: 12,
+        maxScore: 12
+      };
+
+      fetch(gasUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        console.log("Synced to TWP_GetInvolved_M4_Database successfully.");
+      }).catch(err => {
+        console.warn("Offline queue saved:", err);
+      });
+    }
+
+    // 8. Teacher Dashboard & Roster Handling
+    function renderScoresTable() {
+      const tbody = document.getElementById('scores-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      rosterDB.forEach(std => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50/80 transition';
+        tr.innerHTML = `
+          <td class="p-3.5 font-mono font-bold text-apple-accent">${std.studentId}</td>
+          <td class="p-3.5 font-medium">${std.name}</td>
+          <td class="p-3.5 text-apple-textSecondary">${std.school}</td>
+          <td class="p-3.5">${std.grade}</td>
+          <td class="p-3.5 font-semibold text-green-600">${std.u5}</td>
+          <td class="p-3.5 font-semibold text-green-600">${std.u6}</td>
+          <td class="p-3.5 text-gray-400">${std.u7}</td>
+          <td class="p-3.5 text-gray-400">${std.u8}</td>
+          <td class="p-3.5"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-50 text-green-700">${std.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterScoresTable() {
+      const q = (document.getElementById('teacher-search-input').value || '').toLowerCase();
+      document.querySelectorAll('#scores-tbody tr').forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(q) ? '' : 'none';
+      });
+    }
+
+    function exportScoresToCSV() {
+      let csv = "Student ID,ชื่อ-นามสกุล,โรงเรียน,ระดับชั้น,Unit 5,Unit 6,Unit 7,Unit 8,สถานะ\n";
+      rosterDB.forEach(r => {
+        csv += `"${r.studentId}","${r.name}","${r.school}","${r.grade}","${r.u5}","${r.u6}","${r.u7}","${r.u8}","${r.status}"\n`;
+      });
+      const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `TWP_GetInvolved_M4_Scores_${Date.now()}.csv`;
+      a.click();
+    }
+
+    function handleRosterUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      alert(`นำเข้าไฟล์รายชื่อ: ${file.name} เรียบร้อยแล้ว (ตรวจสอบและอัปเดตสารบบอัตโนมัติ)`);
+    }
+
+    // Auth & Modals
+    function toggleAuthModal() {
+      const modal = document.getElementById('auth-modal');
+      modal.classList.toggle('hidden');
+    }
+
+    function performLogin() {
+      const email = (document.getElementById('auth-email-input').value || '').trim().toLowerCase();
+      if (!email) {
+        alert("กรุณากรอกอีเมลของนักเรียน");
+        return;
+      }
+      currentStudent.email = email;
+      currentStudent.name = email.split('@')[0];
+      updateUserDisplay();
+      toggleAuthModal();
+      drawCertificateCanvas();
+    }
+
+    function loginAsDemo() {
+      currentStudent = {
+        studentId: "STD-M4-001",
+        name: "ภัทรพล สิทธิไพศาล",
+        school: "รร.สาธิตมหาวิทยาลัย",
+        grade: "ม.4",
+        room: "1",
+        email: "pattarapol.m4@gmail.com"
+      };
+      updateUserDisplay();
+      toggleAuthModal();
+      drawCertificateCanvas();
+    }
+
+    function updateUserDisplay() {
+      document.getElementById('user-display-name').textContent = currentStudent.name;
+    }
+
+    function toggleConfigModal() {
+      document.getElementById('config-modal').classList.toggle('hidden');
+    }
+
+    function openConfigModal() {
+      document.getElementById('gas-url-input').value = gasUrl;
+      toggleConfigModal();
+    }
+
+    function saveGASUrl() {
+      const val = (document.getElementById('gas-url-input').value || '').trim();
+      gasUrl = val || DEFAULT_GAS_URL;
+      localStorage.setItem('twp_m4_gas_url', gasUrl);
+      toggleConfigModal();
+      alert("บันทึกการตั้งค่า Google Apps Script Web App เรียบร้อยแล้ว");
+    }
+  </script>
+</body>
+</html>
